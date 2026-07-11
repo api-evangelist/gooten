@@ -1,0 +1,59 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Gooten
+providerId: gooten
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- Print on Demand
+- Fulfillment
+- Ecommerce
+- Rate Limiting
+- Quotas
+description: >-
+  Gooten does not publish fixed numeric rate limits for its REST API. Access is
+  keyed to your RecipeID and, for order and billing operations, your
+  PartnerBillingKey. Catalog reads (products, variants, templates, countries,
+  currencies) support pagination via page and pageSize parameters and an
+  optional compression flag to reduce payload size, which are the primary tools
+  for managing large catalog pulls. Order submission is naturally bounded by
+  real production. No per-minute or per-day request cap is documented as of the
+  review date.
+notes: >-
+  Treat any large catalog synchronization as paginated and cache aggressively;
+  product and variant data changes slowly. Numeric limits, if enforced, are not
+  documented publicly - contact Gooten partner support for high-throughput
+  integration guidance.
+sources:
+- https://www.gooten.com/api-documentation/getting-started/
+- https://www.gooten.com/api-documentation/product-variants-skus-for-a-product/
+responseCodes:
+  throttled: 429
+limits:
+- name: API Requests
+  scope: recipe
+  metric: requests
+  limit: not published
+  notes: No fixed numeric request-rate limit is documented for the Gooten API.
+- name: Catalog Pagination
+  scope: request
+  metric: items
+  limit: configurable via page and pageSize
+  notes: Product and variant listings are paginated; use compression=true to reduce payload size.
+- name: Order Submission
+  scope: recipe
+  metric: orders
+  limit: not published
+  notes: Bounded by real manufacturing; no documented cap on order POSTs.
+policies:
+- name: HTTPS Required
+  description: All requests must use HTTPS; plain HTTP calls fail.
+- name: Backoff Strategy
+  description: Clients should implement exponential backoff with jitter and honor Retry-After on any 429 responses.
+- name: Idempotency
+  description: Set IsPartnerSourceIdUnique with a stable SourceId on order submission to avoid duplicate orders on retry.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

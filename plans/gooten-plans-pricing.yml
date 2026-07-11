@@ -1,0 +1,100 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Gooten
+providerId: gooten
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- Print on Demand
+- Fulfillment
+- Ecommerce
+- Plans
+description: >-
+  Gooten has no subscription or per-seat pricing for its platform or API. There
+  are no setup fees and no monthly fees - you pay only the per-order production
+  cost (product + print) plus shipping, and only when an item is actually
+  manufactured and shipped. You set your own retail price and keep the margin
+  above Gooten's base cost. The API itself is free to use; access is gated by
+  having a Gooten account (RecipeID + PartnerBillingKey), not by a paid tier.
+  High-volume merchants can negotiate custom rates with Gooten's enterprise team.
+notes: >-
+  Per-product base costs vary by item, decoration, and region and are returned
+  live by the productvariants, shippingprices, and price endpoints rather than
+  published as a fixed rate card. The example base cost below (a Bella 3001
+  t-shirt) is illustrative from Gooten marketing and is not reconciled. Verify
+  current costs via the API and the Gooten pricing pages.
+sources:
+- https://www.gooten.com/print-on-demand/
+- https://www.gooten.com/api-documentation/getting-started/
+- https://www.gooten.com/api-documentation/getting-price-estimate-for-an-order/
+plans:
+- id: gooten-standard
+  name: Standard (Pay Per Order)
+  type: usage
+  description: >-
+    Free to join and free to integrate. You pay the base production cost plus
+    shipping only when an order is manufactured and shipped, with no monthly fee
+    and no minimum order volume. Retail price and margin are set by you.
+  entries:
+  - label: Account and API Access
+    name: account_access
+    type: flat
+    metric: subscription
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $0 (no setup or monthly fee)
+    userMultiplied: false
+  - label: Per-Order Production Cost
+    name: production_cost
+    type: usage
+    metric: order_items
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: base product + print cost per item (varies by SKU, decoration, region)
+    userMultiplied: false
+  - label: Shipping
+    name: shipping_cost
+    type: usage
+    metric: shipments
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: calculated per destination and product at order time
+    userMultiplied: false
+  elements:
+  - name: Full Product Catalog
+  - name: REST API (Products, Orders, Shipping, Print Assets)
+  - name: Print-Ready Products
+  - name: Order-Status Webhooks
+  - name: Global Vendor Routing
+- id: gooten-enterprise
+  name: Enterprise / Custom Volume
+  type: enterprise
+  description: >-
+    Negotiated per-unit pricing for high-volume merchants (reported around 500+
+    orders/month) plus dedicated support and custom terms. Contact Gooten.
+  entries:
+  - label: Custom Volume Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales (negotiated discounts off listed base costs)
+    userMultiplied: false
+  elements:
+  - name: Negotiated Base Costs
+  - name: Dedicated Support
+  - name: Custom Terms
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

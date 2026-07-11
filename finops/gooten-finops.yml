@@ -1,0 +1,102 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Gooten
+providerId: gooten
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- Print on Demand
+- Fulfillment
+- Ecommerce
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Gooten spend. Gooten charges no platform subscription or API
+  fee; cost is entirely cost-of-goods-sold, incurred per order at the moment an
+  item is manufactured and shipped. Each order line accrues a base production
+  cost (product + print) plus destination-based shipping, with possible
+  surcharges, taxes, and fees. Because there is no fixed rate card, the API's
+  price and shippingprices endpoints are the source of truth for unit cost and
+  should be called before checkout so retail margin can be computed live. The
+  dominant optimization levers are product/SKU selection, decoration choices,
+  shipping method, vendor routing region, and negotiated enterprise volume
+  pricing.
+notes: >-
+  Per-unit base costs are dynamic and returned by the API rather than published;
+  amounts are not reconciled here. Model Gooten spend as COGS per fulfilled
+  order, not as a recurring SaaS line item.
+sources:
+- https://www.gooten.com/print-on-demand/
+- https://www.gooten.com/api-documentation/getting-price-estimate-for-an-order/
+- https://www.gooten.com/api-documentation/orders-get-billing-information/
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Gooten
+serviceCategory: Manufacturing and Fulfillment
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Per Order
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Tax
+  - Adjustment
+focusColumns:
+  ServiceName: Gooten Print on Demand
+  ServiceCategory: Manufacturing and Fulfillment
+  ProviderName: Gooten
+  PublisherName: Gooten
+  InvoiceIssuerName: Gooten
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: production_cost
+  description: Base product plus print cost per manufactured order item.
+  unit: order_items
+  aggregation: sum
+  dimensions:
+  - recipe
+  - sku
+  - region
+- name: shipping_cost
+  description: Shipping charge per shipment, calculated by destination and product.
+  unit: shipments
+  aggregation: sum
+  dimensions:
+  - recipe
+  - destination_country
+- name: surcharges_taxes_fees
+  description: Surcharges, taxes, and fees applied to an order as returned in the billing summary.
+  unit: orders
+  aggregation: sum
+  dimensions:
+  - recipe
+  - destination_country
+- name: discounts
+  description: Discounts applied to an order, including negotiated enterprise volume discounts.
+  unit: orders
+  aggregation: sum
+  dimensions:
+  - recipe
+principles:
+- name: Visibility
+  description: Call price and orderbilling to capture per-order product, shipping, surcharge, tax, and fee breakdowns; reconcile against retail revenue.
+- name: Allocation
+  description: Tag orders with a stable SourceId and map RecipeIDs to storefronts/brands so COGS maps to the right cost center.
+- name: Optimization
+  description: Choose lower-cost SKUs and decoration, select appropriate shipping methods, route to nearer vendor regions, and negotiate enterprise volume pricing at scale.
+- name: Accountability
+  description: Review per-order margin (retail minus Gooten base + shipping + fees) regularly; set retail prices from live API quotes rather than stale rate cards.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

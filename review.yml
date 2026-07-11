@@ -1,0 +1,114 @@
+aid: gooten
+name: Gooten
+review:
+  question: Does Gooten expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-11'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Gooten's public API is request/response
+    REST over HTTPS hosted at api.print.io. The only asynchronous surface is
+    outbound order-status webhooks (Gooten POSTs status updates to a URL you
+    configure) - that is server-to-endpoint HTTP, not a WebSocket or SSE
+    stream on Gooten's own API, and there is no published AsyncAPI-worthy
+    channel schema for it. No server-push transport (WebSocket or SSE) exists
+    on Gooten's own API to model.
+findings:
+  summary: |
+    Gooten does not publish a documented public WebSocket API. Gooten is a
+    print-on-demand and global manufacturing / fulfillment platform. Its public
+    API is a REST API hosted at api.print.io (the Print.io platform Gooten was
+    built on), organized around resource-oriented URLs and standard HTTP verbs
+    (GET, POST, PUT, DELETE) returning JSON, and requiring HTTPS. Requests are
+    authenticated with a public RecipeID query parameter; order-writing and
+    billing operations additionally require a private PartnerBillingKey
+    (URL-encoded). Most catalog / order / shipping endpoints live under the base
+    https://api.print.io/api/v/5/source/api, and print-ready product (PRP)
+    management lives under https://api.print.io/api/v2/recipes/{recipeId}.
+    Asynchronous order-status delivery is provided via configurable outbound
+    webhooks (Gooten POSTs to your endpoint) - not a WebSocket. No realtime,
+    bidirectional, or streaming WebSocket (ws:// or wss://) endpoint is
+    documented anywhere in Gooten's API documentation as of the review date.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.print.io/api/v/5/source/api
+      documented: true
+      note: Core catalog, order, shipping, and billing endpoints (source API v5).
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.print.io/api/v2/recipes/{recipeId}
+      documented: true
+      note: Print-ready product (PRP) management endpoints.
+    - protocol: Webhook
+      scheme: https
+      documented: true
+      note: Outbound order-status updates POSTed to a partner-configured URL. Server-to-endpoint HTTP, not WebSocket.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in Gooten's API documentation as of the review date.
+  endpointsConfirmedRest:
+    - GET  https://api.print.io/api/v/5/source/api/products
+    - GET  https://api.print.io/api/v/5/source/api/productvariants
+    - GET  https://api.print.io/api/v/5/source/api/countries
+    - GET  https://api.print.io/api/v/5/source/api/currencies
+    - POST https://api.print.io/api/v/5/source/api/shippingprices
+    - POST https://api.print.io/api/v/5/source/api/price
+    - POST https://api.print.io/api/v/5/source/api/orders
+    - GET  https://api.print.io/api/v/5/source/api/orders
+    - GET  https://api.print.io/api/v/5/source/api/orderbilling
+    - PUT  https://api.print.io/api/v/5/source/api/shippingAddress
+    - PUT  https://api.print.io/api/v/5/source/api/shippingMethod
+    - GET  https://api.print.io/api/v/5/source/api/producttemplates
+    - GET    https://api.print.io/api/v2/recipes/{recipeId}/printreadyproducts
+    - POST   https://api.print.io/api/v2/recipes/{recipeId}/printreadyproducts
+    - PUT    https://api.print.io/api/v2/recipes/{recipeId}/printreadyproducts
+    - DELETE https://api.print.io/api/v2/recipes/{recipeId}/printreadyproducts/{productId}
+    - GET    https://api.print.io/api/v2/recipes/{recipeId}/printreadyproducts/variants
+sources:
+  - url: https://www.gooten.com/api-documentation/getting-started/
+    type: Documentation
+    note: REST base, RecipeID + PartnerBillingKey auth, HTTPS-only, CORS enabled. No WebSocket mentioned.
+  - url: https://www.gooten.com/api-documentation/submitting-an-order/
+    type: APIReference
+    note: POST /api/v/5/source/api/orders with ShipToAddress, BillingAddress, Items, Payment. Returns order Id.
+  - url: https://www.gooten.com/api-documentation/get-order-by-id/
+    type: APIReference
+    note: GET /api/v/5/source/api/orders?Id= to retrieve an order by Safe Order ID.
+  - url: https://www.gooten.com/api-documentation/search-orders/
+    type: APIReference
+    note: Search orders by lastName, email, postalCode, date range; requires partnerBillingKey.
+  - url: https://www.gooten.com/api-documentation/orders-get-billing-information/
+    type: APIReference
+    note: GET /api/v/5/source/api/orderbilling?orderid=&recipeId=&partnerBillingKey=.
+  - url: https://www.gooten.com/api-documentation/orders-update-shipping-address-and-method-for-orders/
+    type: APIReference
+    note: PUT shippingAddress and PUT shippingMethod for in-flight orders.
+  - url: https://www.gooten.com/api-documentation/shipping-options-for-a-cart/
+    type: APIReference
+    note: POST /shippingprices returns shipping options for a cart.
+  - url: https://www.gooten.com/api-documentation/getting-price-estimate-for-an-order/
+    type: APIReference
+    note: POST /price estimates total order cost before submission.
+  - url: https://www.gooten.com/api-documentation/product-variants-skus-for-a-product/
+    type: APIReference
+    note: GET /productvariants for a productId by countryCode; SKUs vary by region.
+  - url: https://www.gooten.com/api-documentation/listing-product-templates-for-a-sku/
+    type: APIReference
+    note: GET /producttemplates?sku= returns template spaces, sizes, coordinates.
+  - url: https://www.gooten.com/api-documentation/print-ready-products/
+    type: APIReference
+    note: PRP CRUD under /api/v2/recipes/{recipeId}/printreadyproducts.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists. Gooten's public API is request/response
+    REST over HTTPS on api.print.io, authenticated with RecipeID and (for order /
+    billing operations) PartnerBillingKey. The only asynchronous mechanism is
+    outbound order-status webhooks - server-to-endpoint HTTP, not a WebSocket or
+    SSE stream - so no AsyncAPI document was created. The apis.yml catalogs the
+    documented REST surface across four logical APIs (Products, Orders, Shipping,
+    Print Assets).

@@ -1,0 +1,204 @@
+{
+  "info": {
+    "name": "Gooten API",
+    "description": "REST API for the Gooten print-on-demand and global manufacturing / fulfillment platform, hosted at api.print.io. Browse the catalog and per-region SKUs, retrieve print templates, create print-ready products, quote shipping and order prices, and submit and manage manufacturing orders. Every request needs a RecipeID; order-writing and billing operations also need a private, URL-encoded PartnerBillingKey. HTTPS only.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "https://api.print.io/api/v/5/source/api", "type": "string" },
+    { "key": "v2Base", "value": "https://api.print.io/api/v2/recipes", "type": "string" },
+    { "key": "recipeId", "value": "", "type": "string" },
+    { "key": "partnerBillingKey", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "List products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/products?countryCode=US&recipeId={{recipeId}}", "host": ["{{baseUrl}}"], "path": ["products"], "query": [{ "key": "countryCode", "value": "US" }, { "key": "recipeId", "value": "{{recipeId}}" }] },
+            "description": "Lists catalog products (categories such as 'Canvas Wraps')."
+          }
+        },
+        {
+          "name": "List product variants (SKUs)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/productvariants?productId=&countryCode=US&currencyCode=USD&recipeId={{recipeId}}", "host": ["{{baseUrl}}"], "path": ["productvariants"], "query": [{ "key": "productId", "value": "" }, { "key": "countryCode", "value": "US" }, { "key": "currencyCode", "value": "USD" }, { "key": "recipeId", "value": "{{recipeId}}" }] },
+            "description": "Lists SKUs and pricing for a product; SKUs vary by country."
+          }
+        },
+        {
+          "name": "List supported shipping countries",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/countries?recipeId={{recipeId}}", "host": ["{{baseUrl}}"], "path": ["countries"], "query": [{ "key": "recipeId", "value": "{{recipeId}}" }] },
+            "description": "Returns the countries Gooten can ship to."
+          }
+        },
+        {
+          "name": "List supported currencies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/currencies?recipeId={{recipeId}}", "host": ["{{baseUrl}}"], "path": ["currencies"], "query": [{ "key": "recipeId", "value": "{{recipeId}}" }] },
+            "description": "Returns the currencies supported for pricing and orders."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shipping",
+      "item": [
+        {
+          "name": "Get shipping options for a cart",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"ShipToPostalCode\": \"10001\",\n  \"ShipToCountry\": \"US\",\n  \"CurrencyCode\": \"USD\",\n  \"Items\": [\n    { \"SKU\": \"\", \"Quantity\": 1 }\n  ]\n}" },
+            "url": { "raw": "{{baseUrl}}/shippingprices?RecipeID={{recipeId}}", "host": ["{{baseUrl}}"], "path": ["shippingprices"], "query": [{ "key": "RecipeID", "value": "{{recipeId}}" }] },
+            "description": "Returns available shipping options and costs for a cart."
+          }
+        },
+        {
+          "name": "Get an order price estimate",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"ShipToAddress\": {\n    \"Line1\": \"\",\n    \"City\": \"\",\n    \"State\": \"\",\n    \"CountryCode\": \"US\",\n    \"PostalCode\": \"10001\"\n  },\n  \"Items\": [\n    { \"Quantity\": 1, \"SKU\": \"\", \"ShipType\": \"standard\" }\n  ],\n  \"Payment\": {\n    \"CurrencyCode\": \"USD\",\n    \"PartnerBillingKey\": \"{{partnerBillingKey}}\"\n  }\n}" },
+            "url": { "raw": "{{baseUrl}}/price?RecipeID={{recipeId}}", "host": ["{{baseUrl}}"], "path": ["price"], "query": [{ "key": "RecipeID", "value": "{{recipeId}}" }] },
+            "description": "Estimates the total order cost before submission."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Submit an order",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"ShipToAddress\": {\n    \"FirstName\": \"\",\n    \"LastName\": \"\",\n    \"Line1\": \"\",\n    \"City\": \"\",\n    \"State\": \"\",\n    \"CountryCode\": \"US\",\n    \"PostalCode\": \"10001\",\n    \"Email\": \"\"\n  },\n  \"BillingAddress\": {\n    \"FirstName\": \"\",\n    \"LastName\": \"\",\n    \"Line1\": \"\",\n    \"City\": \"\",\n    \"State\": \"\",\n    \"CountryCode\": \"US\",\n    \"PostalCode\": \"10001\",\n    \"Email\": \"\"\n  },\n  \"Items\": [\n    {\n      \"Quantity\": 1,\n      \"SKU\": \"\",\n      \"ShipType\": \"standard\",\n      \"Images\": [{ \"Url\": \"\", \"SpaceId\": \"\", \"Index\": 0 }]\n    }\n  ],\n  \"Payment\": { \"PartnerBillingKey\": \"{{partnerBillingKey}}\" }\n}" },
+            "url": { "raw": "{{baseUrl}}/orders?recipeid={{recipeId}}", "host": ["{{baseUrl}}"], "path": ["orders"], "query": [{ "key": "recipeid", "value": "{{recipeId}}" }] },
+            "description": "Submits a new manufacturing order and returns its Id."
+          }
+        },
+        {
+          "name": "Get an order by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/orders?recipeid={{recipeId}}&Id=", "host": ["{{baseUrl}}"], "path": ["orders"], "query": [{ "key": "recipeid", "value": "{{recipeId}}" }, { "key": "Id", "value": "" }] },
+            "description": "Retrieves an order by its Safe Order ID."
+          }
+        },
+        {
+          "name": "Search orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/orders?recipeID={{recipeId}}&partnerBillingKey={{partnerBillingKey}}&email=&startDate=&endDate=&page=1", "host": ["{{baseUrl}}"], "path": ["orders"], "query": [{ "key": "recipeID", "value": "{{recipeId}}" }, { "key": "partnerBillingKey", "value": "{{partnerBillingKey}}" }, { "key": "email", "value": "" }, { "key": "startDate", "value": "" }, { "key": "endDate", "value": "" }, { "key": "page", "value": "1" }] },
+            "description": "Searches orders by name, email, postal code, and date range."
+          }
+        },
+        {
+          "name": "Get billing information for an order",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/orderbilling?orderid=&recipeId={{recipeId}}&partnerBillingKey={{partnerBillingKey}}", "host": ["{{baseUrl}}"], "path": ["orderbilling"], "query": [{ "key": "orderid", "value": "" }, { "key": "recipeId", "value": "{{recipeId}}" }, { "key": "partnerBillingKey", "value": "{{partnerBillingKey}}" }] },
+            "description": "Returns the full billing breakdown for an order."
+          }
+        },
+        {
+          "name": "Update shipping address",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"FirstName\": \"\",\n  \"LastName\": \"\",\n  \"Line1\": \"\",\n  \"City\": \"\",\n  \"State\": \"\",\n  \"CountryCode\": \"US\",\n  \"PostalCode\": \"10001\"\n}" },
+            "url": { "raw": "{{baseUrl}}/shippingAddress?orderId=&recipeid={{recipeId}}&partnerBillingKey={{partnerBillingKey}}", "host": ["{{baseUrl}}"], "path": ["shippingAddress"], "query": [{ "key": "orderId", "value": "" }, { "key": "recipeid", "value": "{{recipeId}}" }, { "key": "partnerBillingKey", "value": "{{partnerBillingKey}}" }] },
+            "description": "Updates the ship-to address on an editable order."
+          }
+        },
+        {
+          "name": "Update shipping method",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"OrderItemIds\": [\"\"],\n  \"NewShippingMethod\": \"expedited\"\n}" },
+            "url": { "raw": "{{baseUrl}}/shippingMethod?orderId=&recipeid={{recipeId}}&partnerBillingKey={{partnerBillingKey}}", "host": ["{{baseUrl}}"], "path": ["shippingMethod"], "query": [{ "key": "orderId", "value": "" }, { "key": "recipeid", "value": "{{recipeId}}" }, { "key": "partnerBillingKey", "value": "{{partnerBillingKey}}" }] },
+            "description": "Changes the shipping method for order items; pricing adjusts automatically."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Print Assets",
+      "item": [
+        {
+          "name": "List product templates for a SKU",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/producttemplates?sku=&RecipeID={{recipeId}}", "host": ["{{baseUrl}}"], "path": ["producttemplates"], "query": [{ "key": "sku", "value": "" }, { "key": "RecipeID", "value": "{{recipeId}}" }] },
+            "description": "Returns template spaces, sizes, and coordinates for building print-ready art."
+          }
+        },
+        {
+          "name": "List print-ready products",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{v2Base}}/{{recipeId}}/printreadyproducts?page=1", "host": ["{{v2Base}}"], "path": ["{{recipeId}}", "printreadyproducts"], "query": [{ "key": "page", "value": "1" }] },
+            "description": "Lists print-ready products (PRPs) for your recipe."
+          }
+        },
+        {
+          "name": "Create a print-ready product",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"Sku\": \"\",\n  \"Name\": \"\",\n  \"Images\": [{ \"Url\": \"\", \"SpaceId\": \"\", \"SpaceDesc\": \"\" }]\n}" },
+            "url": { "raw": "{{v2Base}}/{{recipeId}}/printreadyproducts", "host": ["{{v2Base}}"], "path": ["{{recipeId}}", "printreadyproducts"] },
+            "description": "Binds a Gooten SKU to your artwork as a print-ready product."
+          }
+        },
+        {
+          "name": "Update a print-ready product",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"Sku\": \"\",\n  \"Images\": [{ \"Url\": \"\", \"SpaceId\": \"\" }]\n}" },
+            "url": { "raw": "{{v2Base}}/{{recipeId}}/printreadyproducts", "host": ["{{v2Base}}"], "path": ["{{recipeId}}", "printreadyproducts"] },
+            "description": "Updates an existing print-ready product."
+          }
+        },
+        {
+          "name": "Delete a print-ready product",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{v2Base}}/{{recipeId}}/printreadyproducts/:productId", "host": ["{{v2Base}}"], "path": ["{{recipeId}}", "printreadyproducts", ":productId"], "variable": [{ "key": "productId", "value": "" }] },
+            "description": "Deletes a print-ready product by its identifier."
+          }
+        },
+        {
+          "name": "List print-ready product variants",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{v2Base}}/{{recipeId}}/printreadyproducts/variants?page=1", "host": ["{{v2Base}}"], "path": ["{{recipeId}}", "printreadyproducts", "variants"], "query": [{ "key": "page", "value": "1" }] },
+            "description": "Lists the variants of your print-ready products."
+          }
+        }
+      ]
+    }
+  ]
+}

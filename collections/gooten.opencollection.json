@@ -1,0 +1,186 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Gooten API",
+    "version": "5"
+  },
+  "items": [
+    {
+      "info": { "name": "Products", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List products.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.print.io/api/v/5/source/api/products?countryCode=US&recipeId={{recipeId}}" },
+          "docs": "Lists catalog products (categories such as 'Canvas Wraps')."
+        },
+        {
+          "info": { "name": "List product variants (SKUs).", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.print.io/api/v/5/source/api/productvariants?productId=&countryCode=US&currencyCode=USD&recipeId={{recipeId}}" },
+          "docs": "Lists SKUs and pricing for a product; SKUs vary by country."
+        },
+        {
+          "info": { "name": "List supported shipping countries.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.print.io/api/v/5/source/api/countries?recipeId={{recipeId}}" },
+          "docs": "Returns the countries Gooten can ship to."
+        },
+        {
+          "info": { "name": "List supported currencies.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.print.io/api/v/5/source/api/currencies?recipeId={{recipeId}}" },
+          "docs": "Returns the currencies supported for pricing and orders."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Shipping", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Get shipping options for a cart.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.print.io/api/v/5/source/api/shippingprices?RecipeID={{recipeId}}",
+            "body": { "type": "json", "data": "{\n  \"ShipToPostalCode\": \"10001\",\n  \"ShipToCountry\": \"US\",\n  \"CurrencyCode\": \"USD\",\n  \"Items\": [ { \"SKU\": \"\", \"Quantity\": 1 } ]\n}" }
+          },
+          "docs": "Returns available shipping options and costs for a cart."
+        },
+        {
+          "info": { "name": "Get an order price estimate.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.print.io/api/v/5/source/api/price?RecipeID={{recipeId}}",
+            "body": { "type": "json", "data": "{\n  \"Items\": [ { \"Quantity\": 1, \"SKU\": \"\", \"ShipType\": \"standard\" } ],\n  \"Payment\": { \"CurrencyCode\": \"USD\", \"PartnerBillingKey\": \"{{partnerBillingKey}}\" }\n}" }
+          },
+          "docs": "Estimates the total order cost before submission."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Orders", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Submit an order.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.print.io/api/v/5/source/api/orders?recipeid={{recipeId}}",
+            "body": { "type": "json", "data": "{\n  \"ShipToAddress\": { \"CountryCode\": \"US\", \"PostalCode\": \"10001\" },\n  \"BillingAddress\": { \"CountryCode\": \"US\", \"PostalCode\": \"10001\" },\n  \"Items\": [ { \"Quantity\": 1, \"SKU\": \"\", \"ShipType\": \"standard\", \"Images\": [ { \"Url\": \"\", \"SpaceId\": \"\", \"Index\": 0 } ] } ],\n  \"Payment\": { \"PartnerBillingKey\": \"{{partnerBillingKey}}\" }\n}" }
+          },
+          "docs": "Submits a new manufacturing order and returns its Id."
+        },
+        {
+          "info": { "name": "Get an order by ID.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.print.io/api/v/5/source/api/orders?recipeid={{recipeId}}&Id=",
+            "params": [
+              { "name": "recipeid", "value": "{{recipeId}}", "type": "query", "description": "Your public RecipeID." },
+              { "name": "Id", "value": "", "type": "query", "description": "The Safe Order ID to retrieve." }
+            ]
+          },
+          "docs": "Retrieves an order by its Safe Order ID."
+        },
+        {
+          "info": { "name": "Search orders.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.print.io/api/v/5/source/api/orders?recipeID={{recipeId}}&partnerBillingKey={{partnerBillingKey}}",
+            "params": [
+              { "name": "recipeID", "value": "{{recipeId}}", "type": "query", "description": "Your public RecipeID." },
+              { "name": "partnerBillingKey", "value": "{{partnerBillingKey}}", "type": "query", "description": "Your private, URL-encoded PartnerBillingKey." },
+              { "name": "email", "value": "", "type": "query", "description": "Filter by customer email." },
+              { "name": "startDate", "value": "", "type": "query", "description": "Search lower bound (yyyy-mm-dd)." },
+              { "name": "endDate", "value": "", "type": "query", "description": "Search upper bound (yyyy-mm-dd)." }
+            ]
+          },
+          "docs": "Searches orders by name, email, postal code, and date range."
+        },
+        {
+          "info": { "name": "Get billing information for an order.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.print.io/api/v/5/source/api/orderbilling?orderid=&recipeId={{recipeId}}&partnerBillingKey={{partnerBillingKey}}",
+            "params": [
+              { "name": "orderid", "value": "", "type": "query", "description": "The order ID to retrieve billing for." },
+              { "name": "recipeId", "value": "{{recipeId}}", "type": "query", "description": "Your public RecipeID." },
+              { "name": "partnerBillingKey", "value": "{{partnerBillingKey}}", "type": "query", "description": "Your private, URL-encoded PartnerBillingKey." }
+            ]
+          },
+          "docs": "Returns the full billing breakdown for an order."
+        },
+        {
+          "info": { "name": "Update shipping address.", "type": "http" },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.print.io/api/v/5/source/api/shippingAddress?orderId=&recipeid={{recipeId}}&partnerBillingKey={{partnerBillingKey}}",
+            "body": { "type": "json", "data": "{\n  \"Line1\": \"\",\n  \"City\": \"\",\n  \"State\": \"\",\n  \"CountryCode\": \"US\",\n  \"PostalCode\": \"10001\"\n}" }
+          },
+          "docs": "Updates the ship-to address on an editable order."
+        },
+        {
+          "info": { "name": "Update shipping method.", "type": "http" },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.print.io/api/v/5/source/api/shippingMethod?orderId=&recipeid={{recipeId}}&partnerBillingKey={{partnerBillingKey}}",
+            "body": { "type": "json", "data": "{\n  \"OrderItemIds\": [\"\"],\n  \"NewShippingMethod\": \"expedited\"\n}" }
+          },
+          "docs": "Changes the shipping method for order items; pricing adjusts automatically."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Print Assets", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List product templates for a SKU.", "type": "http" },
+          "http": {
+            "method": "GET",
+            "url": "https://api.print.io/api/v/5/source/api/producttemplates?sku=&RecipeID={{recipeId}}",
+            "params": [
+              { "name": "sku", "value": "", "type": "query", "description": "The SKU to retrieve template data for." },
+              { "name": "RecipeID", "value": "{{recipeId}}", "type": "query", "description": "Your public RecipeID." }
+            ]
+          },
+          "docs": "Returns template spaces, sizes, and coordinates for building print-ready art."
+        },
+        {
+          "info": { "name": "List print-ready products.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.print.io/api/v2/recipes/{{recipeId}}/printreadyproducts?page=1" },
+          "docs": "Lists print-ready products (PRPs) for your recipe."
+        },
+        {
+          "info": { "name": "Create a print-ready product.", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://api.print.io/api/v2/recipes/{{recipeId}}/printreadyproducts",
+            "body": { "type": "json", "data": "{\n  \"Sku\": \"\",\n  \"Name\": \"\",\n  \"Images\": [ { \"Url\": \"\", \"SpaceId\": \"\", \"SpaceDesc\": \"\" } ]\n}" }
+          },
+          "docs": "Binds a Gooten SKU to your artwork as a print-ready product."
+        },
+        {
+          "info": { "name": "Update a print-ready product.", "type": "http" },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.print.io/api/v2/recipes/{{recipeId}}/printreadyproducts",
+            "body": { "type": "json", "data": "{\n  \"Sku\": \"\",\n  \"Images\": [ { \"Url\": \"\", \"SpaceId\": \"\" } ]\n}" }
+          },
+          "docs": "Updates an existing print-ready product."
+        },
+        {
+          "info": { "name": "Delete a print-ready product.", "type": "http" },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.print.io/api/v2/recipes/{{recipeId}}/printreadyproducts/:productId",
+            "params": [
+              { "name": "productId", "value": "", "type": "path", "description": "The print-ready product identifier." }
+            ]
+          },
+          "docs": "Deletes a print-ready product by its identifier."
+        },
+        {
+          "info": { "name": "List print-ready product variants.", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.print.io/api/v2/recipes/{{recipeId}}/printreadyproducts/variants?page=1" },
+          "docs": "Lists the variants of your print-ready products."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

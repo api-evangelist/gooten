@@ -1,0 +1,147 @@
+aid: gooten
+url: https://raw.githubusercontent.com/api-evangelist/gooten/refs/heads/main/apis.yml
+name: Gooten
+kind: company
+description: Gooten is a print-on-demand and global manufacturing and fulfillment
+  platform for custom products - apparel, wall art, drinkware, home goods, and
+  more. Its REST API (hosted at api.print.io, the platform Gooten was built on)
+  lets ecommerce brands and developers browse the product catalog and per-region
+  SKUs, retrieve print templates, create print-ready products from artwork,
+  quote shipping and order prices, and submit and manage manufacturing orders
+  routed across Gooten's distributed vendor network. Requests are authenticated
+  with a public RecipeID and, for order and billing operations, a private
+  PartnerBillingKey. There are no setup or monthly fees - you pay the per-order
+  production and shipping cost only when an item is manufactured and shipped.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Print on Demand
+- Fulfillment
+- Manufacturing
+- Ecommerce
+- Dropshipping
+- Custom Products
+created: '2026-07-11'
+modified: '2026-07-11'
+specificationVersion: '0.19'
+apis:
+- aid: gooten:gooten-products-api
+  name: Gooten Products API
+  tags:
+  - Products
+  - Catalog
+  - SKUs
+  - Variants
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.gooten.com/api-documentation/product-variants-skus-for-a-product/
+  baseURL: https://api.print.io/api/v/5/source/api
+  properties:
+  - url: https://www.gooten.com/api-documentation/getting-started/
+    type: Documentation
+  - url: https://www.gooten.com/api-documentation/product-variants-skus-for-a-product/
+    type: APIReference
+  - url: openapi/gooten-openapi.yml
+    type: OpenAPI
+  - url: collections/gooten.postman_collection.json
+    type: PostmanCollection
+  - url: collections/gooten.opencollection.json
+    type: OpenCollection
+  description: Browse the Gooten catalog. A product is a category (for example
+    "Canvas Wraps"); each product has region-specific SKUs (variants) available
+    per shipping country. List products, list variants and pricing for a product
+    by country and currency, and look up supported shipping countries and
+    currencies used across the rest of the API.
+- aid: gooten:gooten-orders-api
+  name: Gooten Orders API
+  tags:
+  - Orders
+  - Fulfillment
+  - Billing
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.gooten.com/api-documentation/submitting-an-order/
+  baseURL: https://api.print.io/api/v/5/source/api
+  properties:
+  - url: https://www.gooten.com/api-documentation/submitting-an-order/
+    type: Documentation
+  - url: https://www.gooten.com/api-documentation/get-order-by-id/
+    type: APIReference
+  - url: openapi/gooten-openapi.yml
+    type: OpenAPI
+  - url: collections/gooten.postman_collection.json
+    type: PostmanCollection
+  - url: collections/gooten.opencollection.json
+    type: OpenCollection
+  description: Submit manufacturing orders with ship-to and billing addresses,
+    line items (SKU, quantity, artwork images, ship method), and a Payment object
+    carrying the PartnerBillingKey. Retrieve an order by its Safe Order ID or
+    search orders by name, email, postal code, and date range, get full billing
+    breakdowns, and update the shipping address or method on in-flight orders.
+- aid: gooten:gooten-shipping-api
+  name: Gooten Shipping API
+  tags:
+  - Shipping
+  - Pricing
+  - Estimates
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.gooten.com/api-documentation/shipping-options-for-a-cart/
+  baseURL: https://api.print.io/api/v/5/source/api
+  properties:
+  - url: https://www.gooten.com/api-documentation/shipping-options-for-a-cart/
+    type: Documentation
+  - url: https://www.gooten.com/api-documentation/getting-price-estimate-for-an-order/
+    type: APIReference
+  - url: openapi/gooten-openapi.yml
+    type: OpenAPI
+  - url: collections/gooten.postman_collection.json
+    type: PostmanCollection
+  - url: collections/gooten.opencollection.json
+    type: OpenCollection
+  description: Quote a cart before you submit it. Post ship-to location and line
+    items to retrieve available shipping options and their costs, and post a full
+    cart to estimate the total order price - product cost, shipping, surcharges,
+    taxes, and fees - in a chosen currency.
+- aid: gooten:gooten-print-assets-api
+  name: Gooten Print Assets API
+  tags:
+  - Print Assets
+  - Templates
+  - Artwork
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://www.gooten.com/api-documentation/print-ready-products/
+  baseURL: https://api.print.io
+  properties:
+  - url: https://www.gooten.com/api-documentation/listing-product-templates-for-a-sku/
+    type: Documentation
+  - url: https://www.gooten.com/api-documentation/print-ready-products/
+    type: APIReference
+  - url: openapi/gooten-openapi.yml
+    type: OpenAPI
+  - url: collections/gooten.postman_collection.json
+    type: PostmanCollection
+  - url: collections/gooten.opencollection.json
+    type: OpenCollection
+  description: Manage the artwork and print data behind a SKU. Retrieve the
+    product template for a SKU - the image spaces, required sizes, and
+    coordinates that describe how to build print-ready art - then create, list,
+    update, and delete print-ready products (PRPs) that bind a Gooten SKU to your
+    artwork so it can be ordered directly. Note the PRP endpoints live under the
+    /api/v2/recipes/{recipeId} base.
+common:
+- type: Website
+  url: https://www.gooten.com
+- type: LinkedIn
+  url: https://www.linkedin.com/company/gooten
+- type: Documentation
+  url: https://www.gooten.com/api-documentation/getting-started/
+- type: SupportCenter
+  url: https://help.gooten.com/hc/en-us
+- type: Plans
+  url: plans/gooten-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/gooten-rate-limits.yml
+- type: FinOps
+  url: finops/gooten-finops.yml
+- type: Blog
+  url: https://www.gooten.com/blog/
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
