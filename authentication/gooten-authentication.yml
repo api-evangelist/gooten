@@ -1,0 +1,17 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/gooten-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - query
+schemes:
+- name: recipeId
+  type: apiKey
+  in: query
+  parameter: RecipeID
+  description: Public RecipeID from the Gooten Admin, required on every request. Order-writing
+    and billing endpoints additionally require a private PartnerBillingKey query parameter (URL-encoded).
+  sources:
+  - openapi/gooten-openapi.yml

@@ -126,6 +126,10 @@ apis:
     artwork so it can be ordered directly. Note the PRP endpoints live under the
     /api/v2/recipes/{recipeId} base.
 common:
+- type: DomainSecurity
+  url: security/gooten-domain-security.yml
+- type: Authentication
+  url: authentication/gooten-authentication.yml
 - type: Website
   url: https://www.gooten.com
 - type: LinkedIn
