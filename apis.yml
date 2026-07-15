@@ -126,6 +126,8 @@ apis:
     artwork so it can be ordered directly. Note the PRP endpoints live under the
     /api/v2/recipes/{recipeId} base.
 common:
+- type: AgenticAccess
+  url: agentic-access/gooten-agentic-access.yml
 - type: DomainSecurity
   url: security/gooten-domain-security.yml
 - type: Authentication
