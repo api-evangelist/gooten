@@ -1,0 +1,230 @@
+openapi: 3.0.3
+info:
+  title: Gooten Orders Shipping API
+  description: 'The Gooten API is a REST interface for the Gooten print-on-demand and global manufacturing / fulfillment platform. It is hosted at api.print.io (the platform Gooten was built on) and lets you browse the product catalog and per-region SKUs, retrieve print templates, create print-ready products from artwork, quote shipping and order prices, and submit and manage manufacturing orders. The API is organized around resource-oriented URLs and standard HTTP verbs (GET, POST, PUT, DELETE) and returns JSON. All requests must use HTTPS.
+
+
+    Authentication is by two credentials passed as query parameters. Every request requires a `RecipeID` (a public identifier for your integration). Order-writing and billing operations additionally require a `PartnerBillingKey` (a private key that must never be exposed client-side and must be URL-encoded). Most catalog endpoints live under the source API base `/api/v/5/source/api`; print-ready product (PRP) management lives under the versioned base `/api/v2/recipes/{recipeId}`.
+
+
+    This description was authored by API Evangelist from Gooten''s public documentation. Field-level request/response shapes are modeled from the documented examples and are approximate; consult the Gooten docs for exact payloads.'
+  version: '5'
+  contact:
+    name: Gooten
+    url: https://www.gooten.com/api-documentation/getting-started/
+servers:
+- url: https://api.print.io
+  description: Gooten API (hosted on the Print.io platform)
+security:
+- recipeId: []
+tags:
+- name: Shipping
+  description: Shipping option lookup and order price estimates for a cart.
+paths:
+  /api/v/5/source/api/shippingprices:
+    post:
+      operationId: getShippingOptions
+      tags:
+      - Shipping
+      summary: Get shipping options for a cart
+      description: Returns the available shipping options and their costs for a set of line items shipping to a given destination.
+      parameters:
+      - $ref: '#/components/parameters/RecipeID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShippingPricesRequest'
+      responses:
+        '200':
+          description: Available shipping options.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  HadError:
+                    type: boolean
+                  ShippingOptions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShippingOption'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v/5/source/api/price:
+    post:
+      operationId: getPriceEstimate
+      tags:
+      - Shipping
+      summary: Get an order price estimate
+      description: Estimates the total cost of an order - product cost, shipping, surcharges, taxes, and fees - for a cart in a chosen currency, before the order is submitted.
+      parameters:
+      - $ref: '#/components/parameters/RecipeID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceEstimateRequest'
+      responses:
+        '200':
+          description: An order price estimate.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  parameters:
+    RecipeID:
+      name: RecipeID
+      in: query
+      required: true
+      description: Your public RecipeID from the Gooten Admin.
+      schema:
+        type: string
+  schemas:
+    Error:
+      type: object
+      description: Gooten error envelope. Responses carry a HadError flag and error details.
+      properties:
+        HadError:
+          type: boolean
+        Errors:
+          type: array
+          items:
+            type: object
+            properties:
+              Message:
+                type: string
+              PropertyName:
+                type: string
+              ErrorReference:
+                type: string
+    BillingSummary:
+      type: object
+      properties:
+        ProductCost:
+          type: number
+        ShippingCost:
+          type: number
+        SubTotal:
+          type: number
+        Surcharges:
+          type: number
+        Taxes:
+          type: number
+        Fees:
+          type: number
+        Discounts:
+          type: number
+        Total:
+          type: number
+        CurrencyCode:
+          type: string
+    PriceEstimateRequest:
+      type: object
+      required:
+      - Items
+      - Payment
+      properties:
+        ShipToAddress:
+          $ref: '#/components/schemas/Address'
+        Items:
+          type: array
+          items:
+            type: object
+            required:
+            - SKU
+            - Quantity
+            properties:
+              Quantity:
+                type: integer
+              SKU:
+                type: string
+              ShipType:
+                type: string
+        Payment:
+          type: object
+          properties:
+            CurrencyCode:
+              type: string
+            PartnerBillingKey:
+              type: string
+    Address:
+      type: object
+      properties:
+        FirstName:
+          type: string
+        LastName:
+          type: string
+        Line1:
+          type: string
+        Line2:
+          type: string
+        City:
+          type: string
+        State:
+          type: string
+        CountryCode:
+          type: string
+        PostalCode:
+          type: string
+        Phone:
+          type: string
+        Email:
+          type: string
+        IsBusinessAddress:
+          type: boolean
+    ShippingOption:
+      type: object
+      properties:
+        Method:
+          type: string
+        Price:
+          type: number
+        CurrencyCode:
+          type: string
+    ShippingPricesRequest:
+      type: object
+      required:
+      - ShipToPostalCode
+      - ShipToCountry
+      - CurrencyCode
+      - Items
+      properties:
+        ShipToPostalCode:
+          type: string
+        ShipToCountry:
+          type: string
+        ShipToState:
+          type: string
+        CurrencyCode:
+          type: string
+        Items:
+          type: array
+          items:
+            type: object
+            required:
+            - SKU
+            - Quantity
+            properties:
+              SKU:
+                type: string
+              Quantity:
+                type: integer
+  responses:
+    Unauthorized:
+      description: Missing or invalid RecipeID / PartnerBillingKey.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    recipeId:
+      type: apiKey
+      in: query
+      name: RecipeID
+      description: Public RecipeID from the Gooten Admin, required on every request. Order-writing and billing endpoints additionally require a private PartnerBillingKey query parameter (URL-encoded).

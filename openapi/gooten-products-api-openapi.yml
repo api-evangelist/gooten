@@ -1,0 +1,251 @@
+openapi: 3.0.3
+info:
+  title: Gooten Orders Products API
+  description: 'The Gooten API is a REST interface for the Gooten print-on-demand and global manufacturing / fulfillment platform. It is hosted at api.print.io (the platform Gooten was built on) and lets you browse the product catalog and per-region SKUs, retrieve print templates, create print-ready products from artwork, quote shipping and order prices, and submit and manage manufacturing orders. The API is organized around resource-oriented URLs and standard HTTP verbs (GET, POST, PUT, DELETE) and returns JSON. All requests must use HTTPS.
+
+
+    Authentication is by two credentials passed as query parameters. Every request requires a `RecipeID` (a public identifier for your integration). Order-writing and billing operations additionally require a `PartnerBillingKey` (a private key that must never be exposed client-side and must be URL-encoded). Most catalog endpoints live under the source API base `/api/v/5/source/api`; print-ready product (PRP) management lives under the versioned base `/api/v2/recipes/{recipeId}`.
+
+
+    This description was authored by API Evangelist from Gooten''s public documentation. Field-level request/response shapes are modeled from the documented examples and are approximate; consult the Gooten docs for exact payloads.'
+  version: '5'
+  contact:
+    name: Gooten
+    url: https://www.gooten.com/api-documentation/getting-started/
+servers:
+- url: https://api.print.io
+  description: Gooten API (hosted on the Print.io platform)
+security:
+- recipeId: []
+tags:
+- name: Products
+  description: Catalog products, per-region SKUs, supported countries and currencies.
+paths:
+  /api/v/5/source/api/products:
+    get:
+      operationId: listProducts
+      tags:
+      - Products
+      summary: List products
+      description: Lists catalog products. In Gooten a "product" is a category (for example "Canvas Wraps") that has many SKUs / variants beneath it.
+      parameters:
+      - $ref: '#/components/parameters/RecipeID'
+      - name: countryCode
+        in: query
+        required: false
+        description: Two-character ISO 3166-1 alpha-2 country code for the shipping destination.
+        schema:
+          type: string
+          example: US
+      - name: all
+        in: query
+        required: false
+        description: When true, returns the full catalog rather than only enabled products.
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: A list of products.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  HadError:
+                    type: boolean
+                  Products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v/5/source/api/productvariants:
+    get:
+      operationId: listProductVariants
+      tags:
+      - Products
+      summary: List product variants (SKUs)
+      description: Lists the available variants (SKUs) and pricing for a product. SKUs can differ by region - for example US canvas wraps use inch formats and European ones use centimeter formats - so a country code is required.
+      parameters:
+      - $ref: '#/components/parameters/RecipeID'
+      - name: productId
+        in: query
+        required: true
+        description: The product identifier obtained from the products endpoint.
+        schema:
+          type: string
+      - name: countryCode
+        in: query
+        required: true
+        description: Two-character ISO 3166-1 alpha-2 country code for the shipping destination.
+        schema:
+          type: string
+          example: US
+      - name: currencyCode
+        in: query
+        required: false
+        description: ISO currency code for returned pricing. Defaults to USD.
+        schema:
+          type: string
+          default: USD
+      - name: compression
+        in: query
+        required: false
+        description: When true, reduces the response payload size.
+        schema:
+          type: boolean
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: A list of product variants (SKUs) with pricing.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  HadError:
+                    type: boolean
+                  ProductVariants:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductVariant'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v/5/source/api/countries:
+    get:
+      operationId: listCountries
+      tags:
+      - Products
+      summary: List supported shipping countries
+      description: Returns the countries Gooten can ship to, each with a name, ISO code, support flag, measurement system, flag image URL, and default currency.
+      parameters:
+      - $ref: '#/components/parameters/RecipeID'
+      responses:
+        '200':
+          description: A list of supported shipping countries.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  HadError:
+                    type: boolean
+                  Countries:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Country'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v/5/source/api/currencies:
+    get:
+      operationId: listCurrencies
+      tags:
+      - Products
+      summary: List supported currencies
+      description: Returns the currencies supported for pricing and order submission.
+      parameters:
+      - $ref: '#/components/parameters/RecipeID'
+      responses:
+        '200':
+          description: A list of supported currencies.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  HadError:
+                    type: boolean
+                  Currencies:
+                    type: array
+                    items:
+                      type: string
+                      example: USD
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  parameters:
+    RecipeID:
+      name: RecipeID
+      in: query
+      required: true
+      description: Your public RecipeID from the Gooten Admin.
+      schema:
+        type: string
+  schemas:
+    Product:
+      type: object
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+        CategoryName:
+          type: string
+    Error:
+      type: object
+      description: Gooten error envelope. Responses carry a HadError flag and error details.
+      properties:
+        HadError:
+          type: boolean
+        Errors:
+          type: array
+          items:
+            type: object
+            properties:
+              Message:
+                type: string
+              PropertyName:
+                type: string
+              ErrorReference:
+                type: string
+    Country:
+      type: object
+      properties:
+        Name:
+          type: string
+        Code:
+          type: string
+        IsSupported:
+          type: boolean
+        MeasurementCode:
+          type: string
+        FlagUrl:
+          type: string
+        DefaultCurrency:
+          type: string
+    ProductVariant:
+      type: object
+      properties:
+        Sku:
+          type: string
+        ProductId:
+          type: string
+        Price:
+          type: object
+          properties:
+            Price:
+              type: number
+            CurrencyCode:
+              type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid RecipeID / PartnerBillingKey.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    recipeId:
+      type: apiKey
+      in: query
+      name: RecipeID
+      description: Public RecipeID from the Gooten Admin, required on every request. Order-writing and billing endpoints additionally require a private PartnerBillingKey query parameter (URL-encoded).

@@ -1,0 +1,303 @@
+openapi: 3.0.3
+info:
+  title: Gooten Orders Print Assets API
+  description: 'The Gooten API is a REST interface for the Gooten print-on-demand and global manufacturing / fulfillment platform. It is hosted at api.print.io (the platform Gooten was built on) and lets you browse the product catalog and per-region SKUs, retrieve print templates, create print-ready products from artwork, quote shipping and order prices, and submit and manage manufacturing orders. The API is organized around resource-oriented URLs and standard HTTP verbs (GET, POST, PUT, DELETE) and returns JSON. All requests must use HTTPS.
+
+
+    Authentication is by two credentials passed as query parameters. Every request requires a `RecipeID` (a public identifier for your integration). Order-writing and billing operations additionally require a `PartnerBillingKey` (a private key that must never be exposed client-side and must be URL-encoded). Most catalog endpoints live under the source API base `/api/v/5/source/api`; print-ready product (PRP) management lives under the versioned base `/api/v2/recipes/{recipeId}`.
+
+
+    This description was authored by API Evangelist from Gooten''s public documentation. Field-level request/response shapes are modeled from the documented examples and are approximate; consult the Gooten docs for exact payloads.'
+  version: '5'
+  contact:
+    name: Gooten
+    url: https://www.gooten.com/api-documentation/getting-started/
+servers:
+- url: https://api.print.io
+  description: Gooten API (hosted on the Print.io platform)
+security:
+- recipeId: []
+tags:
+- name: Print Assets
+  description: Product templates and print-ready product (PRP) management.
+paths:
+  /api/v/5/source/api/producttemplates:
+    get:
+      operationId: listProductTemplates
+      tags:
+      - Print Assets
+      summary: List product templates for a SKU
+      description: Returns the template data describing how to build print-ready art for a SKU - the number of image spaces, required sizes, and coordinates used to render and validate artwork.
+      parameters:
+      - $ref: '#/components/parameters/RecipeID'
+      - name: sku
+        in: query
+        required: true
+        description: The SKU to retrieve template data for.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Template data for the SKU.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  HadError:
+                    type: boolean
+                  Template:
+                    $ref: '#/components/schemas/ProductTemplate'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v2/recipes/{recipeId}/printreadyproducts:
+    parameters:
+    - $ref: '#/components/parameters/RecipeIdPath'
+    get:
+      operationId: listPrintReadyProducts
+      tags:
+      - Print Assets
+      summary: List print-ready products
+      description: Lists the print-ready products (PRPs) configured for your recipe.
+      parameters:
+      - name: page
+        in: query
+        required: false
+        description: Page number; defaults to 1.
+        schema:
+          type: integer
+          default: 1
+      responses:
+        '200':
+          description: A page of print-ready products.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  PrintReadyProducts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PrintReadyProduct'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createPrintReadyProduct
+      tags:
+      - Print Assets
+      summary: Create a print-ready product
+      description: Creates a print-ready product that binds a Gooten SKU to your artwork design, positioned by template space (SpaceDesc and/or SpaceId).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrintReadyProductInput'
+      responses:
+        '200':
+          description: The created print-ready product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrintReadyProduct'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    put:
+      operationId: updatePrintReadyProduct
+      tags:
+      - Print Assets
+      summary: Update a print-ready product
+      description: Updates an existing print-ready product with the same payload shape as creation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrintReadyProductInput'
+      responses:
+        '200':
+          description: The updated print-ready product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrintReadyProduct'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v2/recipes/{recipeId}/printreadyproducts/{productId}:
+    parameters:
+    - $ref: '#/components/parameters/RecipeIdPath'
+    - name: productId
+      in: path
+      required: true
+      description: The print-ready product identifier.
+      schema:
+        type: string
+    delete:
+      operationId: deletePrintReadyProduct
+      tags:
+      - Print Assets
+      summary: Delete a print-ready product
+      description: Deletes a print-ready product by its identifier.
+      responses:
+        '200':
+          description: Deletion result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v2/recipes/{recipeId}/printreadyproducts/variants:
+    parameters:
+    - $ref: '#/components/parameters/RecipeIdPath'
+    get:
+      operationId: listPrintReadyProductVariants
+      tags:
+      - Print Assets
+      summary: List print-ready product variants
+      description: Lists the variants of your print-ready products, optionally filtered by product name.
+      parameters:
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: productName
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A page of print-ready product variants.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Variants:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  responses:
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid RecipeID / PartnerBillingKey.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    PrintReadyProductInput:
+      type: object
+      required:
+      - Sku
+      properties:
+        Sku:
+          type: string
+        Name:
+          type: string
+        Images:
+          type: array
+          items:
+            type: object
+            properties:
+              Url:
+                type: string
+              SpaceId:
+                type: string
+              SpaceDesc:
+                type: string
+    ProductTemplate:
+      type: object
+      properties:
+        Sku:
+          type: string
+        Spaces:
+          type: array
+          items:
+            type: object
+            properties:
+              Id:
+                type: string
+              Description:
+                type: string
+              Width:
+                type: number
+              Height:
+                type: number
+              FinalX:
+                type: number
+              FinalY:
+                type: number
+    Error:
+      type: object
+      description: Gooten error envelope. Responses carry a HadError flag and error details.
+      properties:
+        HadError:
+          type: boolean
+        Errors:
+          type: array
+          items:
+            type: object
+            properties:
+              Message:
+                type: string
+              PropertyName:
+                type: string
+              ErrorReference:
+                type: string
+    GenericResult:
+      type: object
+      properties:
+        HadError:
+          type: boolean
+        Id:
+          type: string
+    PrintReadyProduct:
+      allOf:
+      - $ref: '#/components/schemas/PrintReadyProductInput'
+      - type: object
+        properties:
+          Id:
+            type: string
+  parameters:
+    RecipeID:
+      name: RecipeID
+      in: query
+      required: true
+      description: Your public RecipeID from the Gooten Admin.
+      schema:
+        type: string
+    RecipeIdPath:
+      name: recipeId
+      in: path
+      required: true
+      description: Your RecipeID from the Gooten Admin.
+      schema:
+        type: string
+  securitySchemes:
+    recipeId:
+      type: apiKey
+      in: query
+      name: RecipeID
+      description: Public RecipeID from the Gooten Admin, required on every request. Order-writing and billing endpoints additionally require a private PartnerBillingKey query parameter (URL-encoded).

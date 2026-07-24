@@ -1,0 +1,426 @@
+openapi: 3.0.3
+info:
+  title: Gooten Orders API
+  description: 'The Gooten API is a REST interface for the Gooten print-on-demand and global manufacturing / fulfillment platform. It is hosted at api.print.io (the platform Gooten was built on) and lets you browse the product catalog and per-region SKUs, retrieve print templates, create print-ready products from artwork, quote shipping and order prices, and submit and manage manufacturing orders. The API is organized around resource-oriented URLs and standard HTTP verbs (GET, POST, PUT, DELETE) and returns JSON. All requests must use HTTPS.
+
+
+    Authentication is by two credentials passed as query parameters. Every request requires a `RecipeID` (a public identifier for your integration). Order-writing and billing operations additionally require a `PartnerBillingKey` (a private key that must never be exposed client-side and must be URL-encoded). Most catalog endpoints live under the source API base `/api/v/5/source/api`; print-ready product (PRP) management lives under the versioned base `/api/v2/recipes/{recipeId}`.
+
+
+    This description was authored by API Evangelist from Gooten''s public documentation. Field-level request/response shapes are modeled from the documented examples and are approximate; consult the Gooten docs for exact payloads.'
+  version: '5'
+  contact:
+    name: Gooten
+    url: https://www.gooten.com/api-documentation/getting-started/
+servers:
+- url: https://api.print.io
+  description: Gooten API (hosted on the Print.io platform)
+security:
+- recipeId: []
+tags:
+- name: Orders
+  description: Submit, retrieve, search, and update manufacturing orders.
+paths:
+  /api/v/5/source/api/orders:
+    get:
+      operationId: getOrders
+      tags:
+      - Orders
+      summary: Get an order by ID or search orders
+      description: Retrieves a single order by its Safe Order ID (pass `Id`), or searches orders by criteria such as last name, email, postal code, and date range when `Id` is omitted. Search requires the PartnerBillingKey.
+      parameters:
+      - $ref: '#/components/parameters/RecipeID'
+      - name: Id
+        in: query
+        required: false
+        description: The Safe Order ID of a specific order to retrieve.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/PartnerBillingKey'
+      - name: lastName
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: email
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: postalCode
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: startDate
+        in: query
+        required: false
+        description: Search lower bound, format yyyy-mm-dd.
+        schema:
+          type: string
+          format: date
+      - name: endDate
+        in: query
+        required: false
+        description: Search upper bound, format yyyy-mm-dd.
+        schema:
+          type: string
+          format: date
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+      - name: pageSize
+        in: query
+        required: false
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: An order or a page of matching orders.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: submitOrder
+      tags:
+      - Orders
+      summary: Submit an order
+      description: Submits a new manufacturing order. Requires ship-to and billing addresses, one or more line items (SKU, quantity, artwork images, and a ship type or carrier method), and a Payment object carrying the PartnerBillingKey. Returns the new order Id.
+      parameters:
+      - $ref: '#/components/parameters/RecipeID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInput'
+      responses:
+        '200':
+          description: The created order identifier.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Id:
+                    type: string
+                  HadError:
+                    type: boolean
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /api/v/5/source/api/orderbilling:
+    get:
+      operationId: getOrderBilling
+      tags:
+      - Orders
+      summary: Get billing information for an order
+      description: Returns the full billing breakdown for an order - product cost, per-item shipping cost, subtotal, shipping, surcharges, taxes, fees, discounts, and total. Requires the PartnerBillingKey.
+      parameters:
+      - name: orderid
+        in: query
+        required: true
+        description: The order ID to retrieve billing for.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/RecipeID'
+      - $ref: '#/components/parameters/PartnerBillingKey'
+      - name: currency
+        in: query
+        required: false
+        description: Currency for the returned amounts.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The billing breakdown for the order.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v/5/source/api/shippingAddress:
+    put:
+      operationId: updateShippingAddress
+      tags:
+      - Orders
+      summary: Update the shipping address for an order
+      description: Updates the ship-to address on an existing order, provided the order is still in an editable status. Requires the PartnerBillingKey.
+      parameters:
+      - name: orderId
+        in: query
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/RecipeID'
+      - $ref: '#/components/parameters/PartnerBillingKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+      responses:
+        '200':
+          description: Update result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v/5/source/api/shippingMethod:
+    put:
+      operationId: updateShippingMethod
+      tags:
+      - Orders
+      summary: Update the shipping method for order items
+      description: Changes the shipping method for one or more items in an order. Shipping method changes automatically adjust order pricing. Requires the PartnerBillingKey.
+      parameters:
+      - name: orderId
+        in: query
+        required: true
+        schema:
+          type: string
+      - $ref: '#/components/parameters/RecipeID'
+      - $ref: '#/components/parameters/PartnerBillingKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - OrderItemIds
+              - NewShippingMethod
+              properties:
+                OrderItemIds:
+                  type: array
+                  items:
+                    type: string
+                NewShippingMethod:
+                  type: string
+                  enum:
+                  - standard
+                  - expedited
+                  - overnight
+      responses:
+        '200':
+          description: Update result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  responses:
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid RecipeID / PartnerBillingKey.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Order:
+      type: object
+      properties:
+        Id:
+          type: string
+        Status:
+          type: string
+        ShipToAddress:
+          $ref: '#/components/schemas/Address'
+        BillingAddress:
+          $ref: '#/components/schemas/Address'
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        BillingSummary:
+          $ref: '#/components/schemas/BillingSummary'
+        HadError:
+          type: boolean
+    Error:
+      type: object
+      description: Gooten error envelope. Responses carry a HadError flag and error details.
+      properties:
+        HadError:
+          type: boolean
+        Errors:
+          type: array
+          items:
+            type: object
+            properties:
+              Message:
+                type: string
+              PropertyName:
+                type: string
+              ErrorReference:
+                type: string
+    BillingSummary:
+      type: object
+      properties:
+        ProductCost:
+          type: number
+        ShippingCost:
+          type: number
+        SubTotal:
+          type: number
+        Surcharges:
+          type: number
+        Taxes:
+          type: number
+        Fees:
+          type: number
+        Discounts:
+          type: number
+        Total:
+          type: number
+        CurrencyCode:
+          type: string
+    Address:
+      type: object
+      properties:
+        FirstName:
+          type: string
+        LastName:
+          type: string
+        Line1:
+          type: string
+        Line2:
+          type: string
+        City:
+          type: string
+        State:
+          type: string
+        CountryCode:
+          type: string
+        PostalCode:
+          type: string
+        Phone:
+          type: string
+        Email:
+          type: string
+        IsBusinessAddress:
+          type: boolean
+    GenericResult:
+      type: object
+      properties:
+        HadError:
+          type: boolean
+        Id:
+          type: string
+    OrderItem:
+      type: object
+      required:
+      - Quantity
+      - SKU
+      properties:
+        Quantity:
+          type: integer
+        SKU:
+          type: string
+        ShipType:
+          type: string
+          description: Ship type, or provide ShipCarrierMethodId instead.
+        ShipCarrierMethodId:
+          type: integer
+        Images:
+          type: array
+          items:
+            type: object
+            properties:
+              Url:
+                type: string
+              SpaceId:
+                type: string
+              Index:
+                type: integer
+              ThumbnailUrl:
+                type: string
+        SourceId:
+          type: string
+        Meta:
+          type: object
+          additionalProperties: true
+    OrderInput:
+      type: object
+      required:
+      - ShipToAddress
+      - BillingAddress
+      - Items
+      - Payment
+      properties:
+        ShipToAddress:
+          $ref: '#/components/schemas/Address'
+        BillingAddress:
+          $ref: '#/components/schemas/Address'
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        Payment:
+          type: object
+          required:
+          - PartnerBillingKey
+          properties:
+            PartnerBillingKey:
+              type: string
+            CurrencyCode:
+              type: string
+        SourceId:
+          type: string
+        IsPartnerSourceIdUnique:
+          type: boolean
+        IsInTestMode:
+          type: boolean
+        Meta:
+          type: object
+          additionalProperties: true
+  parameters:
+    RecipeID:
+      name: RecipeID
+      in: query
+      required: true
+      description: Your public RecipeID from the Gooten Admin.
+      schema:
+        type: string
+    PartnerBillingKey:
+      name: partnerBillingKey
+      in: query
+      required: true
+      description: Your private Partner Billing Key, URL-encoded. Never expose this client-side.
+      schema:
+        type: string
+  securitySchemes:
+    recipeId:
+      type: apiKey
+      in: query
+      name: RecipeID
+      description: Public RecipeID from the Gooten Admin, required on every request. Order-writing and billing endpoints additionally require a private PartnerBillingKey query parameter (URL-encoded).
