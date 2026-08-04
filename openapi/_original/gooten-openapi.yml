@@ -1,0 +1,1013 @@
+openapi: 3.0.3
+info:
+  title: Gooten API
+  description: >-
+    The Gooten API is a REST interface for the Gooten print-on-demand and global
+    manufacturing / fulfillment platform. It is hosted at api.print.io (the
+    platform Gooten was built on) and lets you browse the product catalog and
+    per-region SKUs, retrieve print templates, create print-ready products from
+    artwork, quote shipping and order prices, and submit and manage manufacturing
+    orders. The API is organized around resource-oriented URLs and standard HTTP
+    verbs (GET, POST, PUT, DELETE) and returns JSON. All requests must use HTTPS.
+
+
+    Authentication is by two credentials passed as query parameters. Every
+    request requires a `RecipeID` (a public identifier for your integration).
+    Order-writing and billing operations additionally require a
+    `PartnerBillingKey` (a private key that must never be exposed client-side and
+    must be URL-encoded). Most catalog endpoints live under the source API base
+    `/api/v/5/source/api`; print-ready product (PRP) management lives under the
+    versioned base `/api/v2/recipes/{recipeId}`.
+
+
+    This description was authored by API Evangelist from Gooten's public
+    documentation. Field-level request/response shapes are modeled from the
+    documented examples and are approximate; consult the Gooten docs for exact
+    payloads.
+  version: '5'
+  contact:
+    name: Gooten
+    url: https://www.gooten.com/api-documentation/getting-started/
+servers:
+  - url: https://api.print.io
+    description: Gooten API (hosted on the Print.io platform)
+security:
+  - recipeId: []
+tags:
+  - name: Products
+    description: Catalog products, per-region SKUs, supported countries and currencies.
+  - name: Shipping
+    description: Shipping option lookup and order price estimates for a cart.
+  - name: Orders
+    description: Submit, retrieve, search, and update manufacturing orders.
+  - name: Print Assets
+    description: Product templates and print-ready product (PRP) management.
+paths:
+  /api/v/5/source/api/products:
+    get:
+      operationId: listProducts
+      tags:
+        - Products
+      summary: List products
+      description: >-
+        Lists catalog products. In Gooten a "product" is a category (for
+        example "Canvas Wraps") that has many SKUs / variants beneath it.
+      parameters:
+        - $ref: '#/components/parameters/RecipeID'
+        - name: countryCode
+          in: query
+          required: false
+          description: Two-character ISO 3166-1 alpha-2 country code for the shipping destination.
+          schema:
+            type: string
+            example: US
+        - name: all
+          in: query
+          required: false
+          description: When true, returns the full catalog rather than only enabled products.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: A list of products.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  HadError:
+                    type: boolean
+                  Products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v/5/source/api/productvariants:
+    get:
+      operationId: listProductVariants
+      tags:
+        - Products
+      summary: List product variants (SKUs)
+      description: >-
+        Lists the available variants (SKUs) and pricing for a product. SKUs can
+        differ by region - for example US canvas wraps use inch formats and
+        European ones use centimeter formats - so a country code is required.
+      parameters:
+        - $ref: '#/components/parameters/RecipeID'
+        - name: productId
+          in: query
+          required: true
+          description: The product identifier obtained from the products endpoint.
+          schema:
+            type: string
+        - name: countryCode
+          in: query
+          required: true
+          description: Two-character ISO 3166-1 alpha-2 country code for the shipping destination.
+          schema:
+            type: string
+            example: US
+        - name: currencyCode
+          in: query
+          required: false
+          description: ISO currency code for returned pricing. Defaults to USD.
+          schema:
+            type: string
+            default: USD
+        - name: compression
+          in: query
+          required: false
+          description: When true, reduces the response payload size.
+          schema:
+            type: boolean
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: A list of product variants (SKUs) with pricing.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  HadError:
+                    type: boolean
+                  ProductVariants:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductVariant'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v/5/source/api/countries:
+    get:
+      operationId: listCountries
+      tags:
+        - Products
+      summary: List supported shipping countries
+      description: >-
+        Returns the countries Gooten can ship to, each with a name, ISO code,
+        support flag, measurement system, flag image URL, and default currency.
+      parameters:
+        - $ref: '#/components/parameters/RecipeID'
+      responses:
+        '200':
+          description: A list of supported shipping countries.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  HadError:
+                    type: boolean
+                  Countries:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Country'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v/5/source/api/currencies:
+    get:
+      operationId: listCurrencies
+      tags:
+        - Products
+      summary: List supported currencies
+      description: Returns the currencies supported for pricing and order submission.
+      parameters:
+        - $ref: '#/components/parameters/RecipeID'
+      responses:
+        '200':
+          description: A list of supported currencies.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  HadError:
+                    type: boolean
+                  Currencies:
+                    type: array
+                    items:
+                      type: string
+                      example: USD
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v/5/source/api/shippingprices:
+    post:
+      operationId: getShippingOptions
+      tags:
+        - Shipping
+      summary: Get shipping options for a cart
+      description: >-
+        Returns the available shipping options and their costs for a set of
+        line items shipping to a given destination.
+      parameters:
+        - $ref: '#/components/parameters/RecipeID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShippingPricesRequest'
+      responses:
+        '200':
+          description: Available shipping options.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  HadError:
+                    type: boolean
+                  ShippingOptions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShippingOption'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v/5/source/api/price:
+    post:
+      operationId: getPriceEstimate
+      tags:
+        - Shipping
+      summary: Get an order price estimate
+      description: >-
+        Estimates the total cost of an order - product cost, shipping,
+        surcharges, taxes, and fees - for a cart in a chosen currency, before the
+        order is submitted.
+      parameters:
+        - $ref: '#/components/parameters/RecipeID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PriceEstimateRequest'
+      responses:
+        '200':
+          description: An order price estimate.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v/5/source/api/orders:
+    get:
+      operationId: getOrders
+      tags:
+        - Orders
+      summary: Get an order by ID or search orders
+      description: >-
+        Retrieves a single order by its Safe Order ID (pass `Id`), or searches
+        orders by criteria such as last name, email, postal code, and date range
+        when `Id` is omitted. Search requires the PartnerBillingKey.
+      parameters:
+        - $ref: '#/components/parameters/RecipeID'
+        - name: Id
+          in: query
+          required: false
+          description: The Safe Order ID of a specific order to retrieve.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/PartnerBillingKey'
+        - name: lastName
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: email
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: postalCode
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: startDate
+          in: query
+          required: false
+          description: Search lower bound, format yyyy-mm-dd.
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          required: false
+          description: Search upper bound, format yyyy-mm-dd.
+          schema:
+            type: string
+            format: date
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: An order or a page of matching orders.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: submitOrder
+      tags:
+        - Orders
+      summary: Submit an order
+      description: >-
+        Submits a new manufacturing order. Requires ship-to and billing
+        addresses, one or more line items (SKU, quantity, artwork images, and a
+        ship type or carrier method), and a Payment object carrying the
+        PartnerBillingKey. Returns the new order Id.
+      parameters:
+        - $ref: '#/components/parameters/RecipeID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInput'
+      responses:
+        '200':
+          description: The created order identifier.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Id:
+                    type: string
+                  HadError:
+                    type: boolean
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+  /api/v/5/source/api/orderbilling:
+    get:
+      operationId: getOrderBilling
+      tags:
+        - Orders
+      summary: Get billing information for an order
+      description: >-
+        Returns the full billing breakdown for an order - product cost, per-item
+        shipping cost, subtotal, shipping, surcharges, taxes, fees, discounts,
+        and total. Requires the PartnerBillingKey.
+      parameters:
+        - name: orderid
+          in: query
+          required: true
+          description: The order ID to retrieve billing for.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/RecipeID'
+        - $ref: '#/components/parameters/PartnerBillingKey'
+        - name: currency
+          in: query
+          required: false
+          description: Currency for the returned amounts.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The billing breakdown for the order.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillingSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v/5/source/api/shippingAddress:
+    put:
+      operationId: updateShippingAddress
+      tags:
+        - Orders
+      summary: Update the shipping address for an order
+      description: >-
+        Updates the ship-to address on an existing order, provided the order is
+        still in an editable status. Requires the PartnerBillingKey.
+      parameters:
+        - name: orderId
+          in: query
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/RecipeID'
+        - $ref: '#/components/parameters/PartnerBillingKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Address'
+      responses:
+        '200':
+          description: Update result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v/5/source/api/shippingMethod:
+    put:
+      operationId: updateShippingMethod
+      tags:
+        - Orders
+      summary: Update the shipping method for order items
+      description: >-
+        Changes the shipping method for one or more items in an order. Shipping
+        method changes automatically adjust order pricing. Requires the
+        PartnerBillingKey.
+      parameters:
+        - name: orderId
+          in: query
+          required: true
+          schema:
+            type: string
+        - $ref: '#/components/parameters/RecipeID'
+        - $ref: '#/components/parameters/PartnerBillingKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - OrderItemIds
+                - NewShippingMethod
+              properties:
+                OrderItemIds:
+                  type: array
+                  items:
+                    type: string
+                NewShippingMethod:
+                  type: string
+                  enum:
+                    - standard
+                    - expedited
+                    - overnight
+      responses:
+        '200':
+          description: Update result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v/5/source/api/producttemplates:
+    get:
+      operationId: listProductTemplates
+      tags:
+        - Print Assets
+      summary: List product templates for a SKU
+      description: >-
+        Returns the template data describing how to build print-ready art for a
+        SKU - the number of image spaces, required sizes, and coordinates used to
+        render and validate artwork.
+      parameters:
+        - $ref: '#/components/parameters/RecipeID'
+        - name: sku
+          in: query
+          required: true
+          description: The SKU to retrieve template data for.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Template data for the SKU.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  HadError:
+                    type: boolean
+                  Template:
+                    $ref: '#/components/schemas/ProductTemplate'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v2/recipes/{recipeId}/printreadyproducts:
+    parameters:
+      - $ref: '#/components/parameters/RecipeIdPath'
+    get:
+      operationId: listPrintReadyProducts
+      tags:
+        - Print Assets
+      summary: List print-ready products
+      description: Lists the print-ready products (PRPs) configured for your recipe.
+      parameters:
+        - name: page
+          in: query
+          required: false
+          description: Page number; defaults to 1.
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: A page of print-ready products.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  PrintReadyProducts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PrintReadyProduct'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    post:
+      operationId: createPrintReadyProduct
+      tags:
+        - Print Assets
+      summary: Create a print-ready product
+      description: >-
+        Creates a print-ready product that binds a Gooten SKU to your artwork
+        design, positioned by template space (SpaceDesc and/or SpaceId).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrintReadyProductInput'
+      responses:
+        '200':
+          description: The created print-ready product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrintReadyProduct'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+    put:
+      operationId: updatePrintReadyProduct
+      tags:
+        - Print Assets
+      summary: Update a print-ready product
+      description: Updates an existing print-ready product with the same payload shape as creation.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrintReadyProductInput'
+      responses:
+        '200':
+          description: The updated print-ready product.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrintReadyProduct'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /api/v2/recipes/{recipeId}/printreadyproducts/{productId}:
+    parameters:
+      - $ref: '#/components/parameters/RecipeIdPath'
+      - name: productId
+        in: path
+        required: true
+        description: The print-ready product identifier.
+        schema:
+          type: string
+    delete:
+      operationId: deletePrintReadyProduct
+      tags:
+        - Print Assets
+      summary: Delete a print-ready product
+      description: Deletes a print-ready product by its identifier.
+      responses:
+        '200':
+          description: Deletion result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+  /api/v2/recipes/{recipeId}/printreadyproducts/variants:
+    parameters:
+      - $ref: '#/components/parameters/RecipeIdPath'
+    get:
+      operationId: listPrintReadyProductVariants
+      tags:
+        - Print Assets
+      summary: List print-ready product variants
+      description: Lists the variants of your print-ready products, optionally filtered by product name.
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: productName
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A page of print-ready product variants.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Variants:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    recipeId:
+      type: apiKey
+      in: query
+      name: RecipeID
+      description: >-
+        Public RecipeID from the Gooten Admin, required on every request.
+        Order-writing and billing endpoints additionally require a private
+        PartnerBillingKey query parameter (URL-encoded).
+  parameters:
+    RecipeID:
+      name: RecipeID
+      in: query
+      required: true
+      description: Your public RecipeID from the Gooten Admin.
+      schema:
+        type: string
+    PartnerBillingKey:
+      name: partnerBillingKey
+      in: query
+      required: true
+      description: Your private Partner Billing Key, URL-encoded. Never expose this client-side.
+      schema:
+        type: string
+    RecipeIdPath:
+      name: recipeId
+      in: path
+      required: true
+      description: Your RecipeID from the Gooten Admin.
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid RecipeID / PartnerBillingKey.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    Error:
+      type: object
+      description: Gooten error envelope. Responses carry a HadError flag and error details.
+      properties:
+        HadError:
+          type: boolean
+        Errors:
+          type: array
+          items:
+            type: object
+            properties:
+              Message:
+                type: string
+              PropertyName:
+                type: string
+              ErrorReference:
+                type: string
+    GenericResult:
+      type: object
+      properties:
+        HadError:
+          type: boolean
+        Id:
+          type: string
+    Product:
+      type: object
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+        CategoryName:
+          type: string
+    ProductVariant:
+      type: object
+      properties:
+        Sku:
+          type: string
+        ProductId:
+          type: string
+        Price:
+          type: object
+          properties:
+            Price:
+              type: number
+            CurrencyCode:
+              type: string
+    Country:
+      type: object
+      properties:
+        Name:
+          type: string
+        Code:
+          type: string
+        IsSupported:
+          type: boolean
+        MeasurementCode:
+          type: string
+        FlagUrl:
+          type: string
+        DefaultCurrency:
+          type: string
+    ShippingPricesRequest:
+      type: object
+      required:
+        - ShipToPostalCode
+        - ShipToCountry
+        - CurrencyCode
+        - Items
+      properties:
+        ShipToPostalCode:
+          type: string
+        ShipToCountry:
+          type: string
+        ShipToState:
+          type: string
+        CurrencyCode:
+          type: string
+        Items:
+          type: array
+          items:
+            type: object
+            required:
+              - SKU
+              - Quantity
+            properties:
+              SKU:
+                type: string
+              Quantity:
+                type: integer
+    ShippingOption:
+      type: object
+      properties:
+        Method:
+          type: string
+        Price:
+          type: number
+        CurrencyCode:
+          type: string
+    PriceEstimateRequest:
+      type: object
+      required:
+        - Items
+        - Payment
+      properties:
+        ShipToAddress:
+          $ref: '#/components/schemas/Address'
+        Items:
+          type: array
+          items:
+            type: object
+            required:
+              - SKU
+              - Quantity
+            properties:
+              Quantity:
+                type: integer
+              SKU:
+                type: string
+              ShipType:
+                type: string
+        Payment:
+          type: object
+          properties:
+            CurrencyCode:
+              type: string
+            PartnerBillingKey:
+              type: string
+    Address:
+      type: object
+      properties:
+        FirstName:
+          type: string
+        LastName:
+          type: string
+        Line1:
+          type: string
+        Line2:
+          type: string
+        City:
+          type: string
+        State:
+          type: string
+        CountryCode:
+          type: string
+        PostalCode:
+          type: string
+        Phone:
+          type: string
+        Email:
+          type: string
+        IsBusinessAddress:
+          type: boolean
+    OrderItem:
+      type: object
+      required:
+        - Quantity
+        - SKU
+      properties:
+        Quantity:
+          type: integer
+        SKU:
+          type: string
+        ShipType:
+          type: string
+          description: Ship type, or provide ShipCarrierMethodId instead.
+        ShipCarrierMethodId:
+          type: integer
+        Images:
+          type: array
+          items:
+            type: object
+            properties:
+              Url:
+                type: string
+              SpaceId:
+                type: string
+              Index:
+                type: integer
+              ThumbnailUrl:
+                type: string
+        SourceId:
+          type: string
+        Meta:
+          type: object
+          additionalProperties: true
+    OrderInput:
+      type: object
+      required:
+        - ShipToAddress
+        - BillingAddress
+        - Items
+        - Payment
+      properties:
+        ShipToAddress:
+          $ref: '#/components/schemas/Address'
+        BillingAddress:
+          $ref: '#/components/schemas/Address'
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        Payment:
+          type: object
+          required:
+            - PartnerBillingKey
+          properties:
+            PartnerBillingKey:
+              type: string
+            CurrencyCode:
+              type: string
+        SourceId:
+          type: string
+        IsPartnerSourceIdUnique:
+          type: boolean
+        IsInTestMode:
+          type: boolean
+        Meta:
+          type: object
+          additionalProperties: true
+    Order:
+      type: object
+      properties:
+        Id:
+          type: string
+        Status:
+          type: string
+        ShipToAddress:
+          $ref: '#/components/schemas/Address'
+        BillingAddress:
+          $ref: '#/components/schemas/Address'
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        BillingSummary:
+          $ref: '#/components/schemas/BillingSummary'
+        HadError:
+          type: boolean
+    BillingSummary:
+      type: object
+      properties:
+        ProductCost:
+          type: number
+        ShippingCost:
+          type: number
+        SubTotal:
+          type: number
+        Surcharges:
+          type: number
+        Taxes:
+          type: number
+        Fees:
+          type: number
+        Discounts:
+          type: number
+        Total:
+          type: number
+        CurrencyCode:
+          type: string
+    ProductTemplate:
+      type: object
+      properties:
+        Sku:
+          type: string
+        Spaces:
+          type: array
+          items:
+            type: object
+            properties:
+              Id:
+                type: string
+              Description:
+                type: string
+              Width:
+                type: number
+              Height:
+                type: number
+              FinalX:
+                type: number
+              FinalY:
+                type: number
+    PrintReadyProductInput:
+      type: object
+      required:
+        - Sku
+      properties:
+        Sku:
+          type: string
+        Name:
+          type: string
+        Images:
+          type: array
+          items:
+            type: object
+            properties:
+              Url:
+                type: string
+              SpaceId:
+                type: string
+              SpaceDesc:
+                type: string
+    PrintReadyProduct:
+      allOf:
+        - $ref: '#/components/schemas/PrintReadyProductInput'
+        - type: object
+          properties:
+            Id:
+              type: string

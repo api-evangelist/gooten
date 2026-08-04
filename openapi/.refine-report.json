@@ -1,0 +1,20 @@
+{
+  "provider": "gooten",
+  "sources": [
+    "gooten-orders-api-openapi.yml",
+    "gooten-print-assets-api-openapi.yml",
+    "gooten-products-api-openapi.yml",
+    "gooten-shipping-api-openapi.yml"
+  ],
+  "outputs": [
+    "gooten-orders-api-openapi.yml",
+    "gooten-print-assets-api-openapi.yml",
+    "gooten-products-api-openapi.yml",
+    "gooten-shipping-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
