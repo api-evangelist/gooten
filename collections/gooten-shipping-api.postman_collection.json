@@ -1,0 +1,397 @@
+{
+  "item": [
+    {
+      "id": "ea3620de-5f68-47b0-919d-6db53786869d",
+      "name": "Shipping",
+      "description": {
+        "content": "Shipping option lookup and order price estimates for a cart.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e9329329-3b5a-491a-88b9-4931f0cf96db",
+          "name": "Get shipping options for a cart",
+          "request": {
+            "name": "Get shipping options for a cart",
+            "description": {
+              "content": "Returns the available shipping options and their costs for a set of line items shipping to a given destination.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v",
+                "5",
+                "source",
+                "api",
+                "shippingprices"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "RecipeID",
+                  "value": "<string>",
+                  "description": "(Required) Your public RecipeID from the Gooten Admin."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ShipToPostalCode\": \"<string>\",\n  \"ShipToCountry\": \"<string>\",\n  \"CurrencyCode\": \"<string>\",\n  \"Items\": [\n    {\n      \"SKU\": \"<string>\",\n      \"Quantity\": \"<integer>\"\n    },\n    {\n      \"SKU\": \"<string>\",\n      \"Quantity\": \"<integer>\"\n    }\n  ],\n  \"ShipToState\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "15d5bdc4-8e36-4175-853c-2c5162ea05d8",
+              "name": "Available shipping options.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "shippingprices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ShipToPostalCode\": \"<string>\",\n  \"ShipToCountry\": \"<string>\",\n  \"CurrencyCode\": \"<string>\",\n  \"Items\": [\n    {\n      \"SKU\": \"<string>\",\n      \"Quantity\": \"<integer>\"\n    },\n    {\n      \"SKU\": \"<string>\",\n      \"Quantity\": \"<integer>\"\n    }\n  ],\n  \"ShipToState\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"ShippingOptions\": [\n    {\n      \"Method\": \"string\",\n      \"Price\": 5296.465335733891,\n      \"CurrencyCode\": \"string\"\n    },\n    {\n      \"Method\": \"string\",\n      \"Price\": 8903.656771141834,\n      \"CurrencyCode\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "117f269e-506a-43a9-aabe-ab7a88655a81",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "shippingprices"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ShipToPostalCode\": \"<string>\",\n  \"ShipToCountry\": \"<string>\",\n  \"CurrencyCode\": \"<string>\",\n  \"Items\": [\n    {\n      \"SKU\": \"<string>\",\n      \"Quantity\": \"<integer>\"\n    },\n    {\n      \"SKU\": \"<string>\",\n      \"Quantity\": \"<integer>\"\n    }\n  ],\n  \"ShipToState\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": false,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2c84ad49-d3d0-4fd7-a490-cce814058d1f",
+          "name": "Get an order price estimate",
+          "request": {
+            "name": "Get an order price estimate",
+            "description": {
+              "content": "Estimates the total cost of an order - product cost, shipping, surcharges, taxes, and fees - for a cart in a chosen currency, before the order is submitted.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v",
+                "5",
+                "source",
+                "api",
+                "price"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "RecipeID",
+                  "value": "<string>",
+                  "description": "(Required) Your public RecipeID from the Gooten Admin."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Items\": [\n    {\n      \"SKU\": \"<string>\",\n      \"Quantity\": \"<integer>\",\n      \"ShipType\": \"<string>\"\n    },\n    {\n      \"SKU\": \"<string>\",\n      \"Quantity\": \"<integer>\",\n      \"ShipType\": \"<string>\"\n    }\n  ],\n  \"Payment\": {\n    \"CurrencyCode\": \"<string>\",\n    \"PartnerBillingKey\": \"<string>\"\n  },\n  \"ShipToAddress\": {\n    \"FirstName\": \"<string>\",\n    \"LastName\": \"<string>\",\n    \"Line1\": \"<string>\",\n    \"Line2\": \"<string>\",\n    \"City\": \"<string>\",\n    \"State\": \"<string>\",\n    \"CountryCode\": \"<string>\",\n    \"PostalCode\": \"<string>\",\n    \"Phone\": \"<string>\",\n    \"Email\": \"<string>\",\n    \"IsBusinessAddress\": \"<boolean>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e3c7aa24-77c2-4762-8241-5cd20845718a",
+              "name": "An order price estimate.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "price"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"Items\": [\n    {\n      \"SKU\": \"<string>\",\n      \"Quantity\": \"<integer>\",\n      \"ShipType\": \"<string>\"\n    },\n    {\n      \"SKU\": \"<string>\",\n      \"Quantity\": \"<integer>\",\n      \"ShipType\": \"<string>\"\n    }\n  ],\n  \"Payment\": {\n    \"CurrencyCode\": \"<string>\",\n    \"PartnerBillingKey\": \"<string>\"\n  },\n  \"ShipToAddress\": {\n    \"FirstName\": \"<string>\",\n    \"LastName\": \"<string>\",\n    \"Line1\": \"<string>\",\n    \"Line2\": \"<string>\",\n    \"City\": \"<string>\",\n    \"State\": \"<string>\",\n    \"CountryCode\": \"<string>\",\n    \"PostalCode\": \"<string>\",\n    \"Phone\": \"<string>\",\n    \"Email\": \"<string>\",\n    \"IsBusinessAddress\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ProductCost\": 469.45805126975216,\n  \"ShippingCost\": 4294.902979285602,\n  \"SubTotal\": 2811.330410074485,\n  \"Surcharges\": 9890.682460959519,\n  \"Taxes\": 8004.006770271155,\n  \"Fees\": 2228.5387615761374,\n  \"Discounts\": 3080.3638987229374,\n  \"Total\": 9369.499989502132,\n  \"CurrencyCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f797647f-d448-452f-ba12-35071eef2cc1",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "price"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"Items\": [\n    {\n      \"SKU\": \"<string>\",\n      \"Quantity\": \"<integer>\",\n      \"ShipType\": \"<string>\"\n    },\n    {\n      \"SKU\": \"<string>\",\n      \"Quantity\": \"<integer>\",\n      \"ShipType\": \"<string>\"\n    }\n  ],\n  \"Payment\": {\n    \"CurrencyCode\": \"<string>\",\n    \"PartnerBillingKey\": \"<string>\"\n  },\n  \"ShipToAddress\": {\n    \"FirstName\": \"<string>\",\n    \"LastName\": \"<string>\",\n    \"Line1\": \"<string>\",\n    \"Line2\": \"<string>\",\n    \"City\": \"<string>\",\n    \"State\": \"<string>\",\n    \"CountryCode\": \"<string>\",\n    \"PostalCode\": \"<string>\",\n    \"Phone\": \"<string>\",\n    \"Email\": \"<string>\",\n    \"IsBusinessAddress\": \"<boolean>\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.print.io",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "RecipeID"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "ece8f0d9-79ce-4c7c-b5e1-246beacf7744",
+    "name": "Gooten Orders Shipping API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Gooten API is a REST interface for the Gooten print-on-demand and global manufacturing / fulfillment platform. It is hosted at api.print.io (the platform Gooten was built on) and lets you browse the product catalog and per-region SKUs, retrieve print templates, create print-ready products from artwork, quote shipping and order prices, and submit and manage manufacturing orders. The API is organized around resource-oriented URLs and standard HTTP verbs (GET, POST, PUT, DELETE) and returns JSON. All requests must use HTTPS.\n\nAuthentication is by two credentials passed as query parameters. Every request requires a `RecipeID` (a public identifier for your integration). Order-writing and billing operations additionally require a `PartnerBillingKey` (a private key that must never be exposed client-side and must be URL-encoded). Most catalog endpoints live under the source API base `/api/v/5/source/api`; print-ready product (PRP) management lives under the versioned base `/api/v2/recipes/{recipeId}`.\n\nThis description was authored by API Evangelist from Gooten's public documentation. Field-level request/response shapes are modeled from the documented examples and are approximate; consult the Gooten docs for exact payloads.\n\nContact Support:\n Name: Gooten",
+      "type": "text/plain"
+    }
+  }
+}

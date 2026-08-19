@@ -1,0 +1,1210 @@
+{
+  "item": [
+    {
+      "id": "cb384099-d267-46f9-8331-313d672531a4",
+      "name": "Print Assets",
+      "description": {
+        "content": "Product templates and print-ready product (PRP) management.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "54ff46c9-3c22-46dd-9488-b213ad613be7",
+          "name": "List product templates for a SKU",
+          "request": {
+            "name": "List product templates for a SKU",
+            "description": {
+              "content": "Returns the template data describing how to build print-ready art for a SKU - the number of image spaces, required sizes, and coordinates used to render and validate artwork.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v",
+                "5",
+                "source",
+                "api",
+                "producttemplates"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "RecipeID",
+                  "value": "<string>",
+                  "description": "(Required) Your public RecipeID from the Gooten Admin."
+                },
+                {
+                  "disabled": false,
+                  "key": "sku",
+                  "value": "<string>",
+                  "description": "(Required) The SKU to retrieve template data for."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "543a6888-9fae-4071-b53d-5787a139d8b3",
+              "name": "Template data for the SKU.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "producttemplates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sku",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": false,\n  \"Template\": {\n    \"Sku\": \"string\",\n    \"Spaces\": [\n      {\n        \"Id\": \"string\",\n        \"Description\": \"string\",\n        \"Width\": 7768.271682285863,\n        \"Height\": 8983.876432986553,\n        \"FinalX\": 6708.784607262775,\n        \"FinalY\": 3027.8376023505916\n      },\n      {\n        \"Id\": \"string\",\n        \"Description\": \"string\",\n        \"Width\": 8423.692468661464,\n        \"Height\": 8435.184659393512,\n        \"FinalX\": 4745.862024164599,\n        \"FinalY\": 4896.7688793936595\n      }\n    ]\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "efa1d539-5c1b-471d-aad9-b823d5bcf68f",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "producttemplates"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sku",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c25e638f-fb8c-4f7d-ae7b-e5f2c1613149",
+          "name": "List print-ready products",
+          "request": {
+            "name": "List print-ready products",
+            "description": {
+              "content": "Lists the print-ready products (PRPs) configured for your recipe.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "recipes",
+                ":recipeId",
+                "printreadyproducts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Page number; defaults to 1."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "recipeId",
+                  "description": "(Required) Your RecipeID from the Gooten Admin."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "8a6d72ad-35f9-4d6d-bc17-5df2920d603c",
+              "name": "A page of print-ready products.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "recipes",
+                    ":recipeId",
+                    "printreadyproducts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "recipeId",
+                      "description": "(Required) Your RecipeID from the Gooten Admin."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"PrintReadyProducts\": [\n    {\n      \"Sku\": \"string\",\n      \"Name\": \"string\",\n      \"Images\": [\n        {\n          \"Url\": \"string\",\n          \"SpaceId\": \"string\",\n          \"SpaceDesc\": \"string\"\n        },\n        {\n          \"Url\": \"string\",\n          \"SpaceId\": \"string\",\n          \"SpaceDesc\": \"string\"\n        }\n      ],\n      \"Id\": \"string\"\n    },\n    {\n      \"Sku\": \"string\",\n      \"Name\": \"string\",\n      \"Images\": [\n        {\n          \"Url\": \"string\",\n          \"SpaceId\": \"string\",\n          \"SpaceDesc\": \"string\"\n        },\n        {\n          \"Url\": \"string\",\n          \"SpaceId\": \"string\",\n          \"SpaceDesc\": \"string\"\n        }\n      ],\n      \"Id\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "32fd1261-bad5-4634-9d8e-11a00059bcc4",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "recipes",
+                    ":recipeId",
+                    "printreadyproducts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "recipeId",
+                      "description": "(Required) Your RecipeID from the Gooten Admin."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7f477ffd-b741-4274-85de-b9c788be6065",
+          "name": "Create a print-ready product",
+          "request": {
+            "name": "Create a print-ready product",
+            "description": {
+              "content": "Creates a print-ready product that binds a Gooten SKU to your artwork design, positioned by template space (SpaceDesc and/or SpaceId).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "recipes",
+                ":recipeId",
+                "printreadyproducts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "recipeId",
+                  "description": "(Required) Your RecipeID from the Gooten Admin."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Sku\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Images\": [\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    },\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b023926b-09d7-44ba-9a6f-1eb715f0b269",
+              "name": "The created print-ready product.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "recipes",
+                    ":recipeId",
+                    "printreadyproducts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "recipeId",
+                      "description": "(Required) Your RecipeID from the Gooten Admin."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"Sku\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Images\": [\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    },\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Sku\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Images\": [\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    },\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    }\n  ],\n  \"Id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bff5054d-9893-46d1-b1b4-00c31b3e4427",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "recipes",
+                    ":recipeId",
+                    "printreadyproducts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "recipeId",
+                      "description": "(Required) Your RecipeID from the Gooten Admin."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"Sku\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Images\": [\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    },\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a4d4a6a6-2025-4f19-8fc4-08fc6b1e2cd8",
+              "name": "The request payload failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "recipes",
+                    ":recipeId",
+                    "printreadyproducts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "recipeId",
+                      "description": "(Required) Your RecipeID from the Gooten Admin."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"Sku\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Images\": [\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    },\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "90405cf2-4e53-4592-a77f-69870549ccc2",
+          "name": "Update a print-ready product",
+          "request": {
+            "name": "Update a print-ready product",
+            "description": {
+              "content": "Updates an existing print-ready product with the same payload shape as creation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "recipes",
+                ":recipeId",
+                "printreadyproducts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "recipeId",
+                  "description": "(Required) Your RecipeID from the Gooten Admin."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Sku\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Images\": [\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    },\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "cee4ecba-7f8b-443f-b9c7-0d156fc08a94",
+              "name": "The updated print-ready product.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "recipes",
+                    ":recipeId",
+                    "printreadyproducts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "recipeId",
+                      "description": "(Required) Your RecipeID from the Gooten Admin."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"Sku\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Images\": [\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    },\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Sku\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Images\": [\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    },\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    }\n  ],\n  \"Id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "13a68438-bd04-4f96-91ff-16c8a2c42fd1",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "recipes",
+                    ":recipeId",
+                    "printreadyproducts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "recipeId",
+                      "description": "(Required) Your RecipeID from the Gooten Admin."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"Sku\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Images\": [\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    },\n    {\n      \"Url\": \"<string>\",\n      \"SpaceId\": \"<string>\",\n      \"SpaceDesc\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "866a7c2f-4cbb-46a1-ab4c-6d5127840e6b",
+          "name": "Delete a print-ready product",
+          "request": {
+            "name": "Delete a print-ready product",
+            "description": {
+              "content": "Deletes a print-ready product by its identifier.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "recipes",
+                ":recipeId",
+                "printreadyproducts",
+                ":productId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "recipeId",
+                  "description": "(Required) Your RecipeID from the Gooten Admin."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "productId",
+                  "description": "(Required) The print-ready product identifier."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f4e96295-8e9a-4c18-b74d-9cb3884387ef",
+              "name": "Deletion result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "recipes",
+                    ":recipeId",
+                    "printreadyproducts",
+                    ":productId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "recipeId",
+                      "description": "(Required) Your RecipeID from the Gooten Admin."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "productId",
+                      "description": "(Required) The print-ready product identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": false,\n  \"Id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "02c758ef-9eb7-4fa1-80b0-67710c1d0a08",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "recipes",
+                    ":recipeId",
+                    "printreadyproducts",
+                    ":productId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "recipeId",
+                      "description": "(Required) Your RecipeID from the Gooten Admin."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "productId",
+                      "description": "(Required) The print-ready product identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f8dad103-155c-48a1-a284-e8bf44a76e81",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "recipes",
+                    ":recipeId",
+                    "printreadyproducts",
+                    ":productId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "recipeId",
+                      "description": "(Required) Your RecipeID from the Gooten Admin."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "productId",
+                      "description": "(Required) The print-ready product identifier."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9d7179b6-ea9f-4405-8fed-9de55ba04057",
+          "name": "List print-ready product variants",
+          "request": {
+            "name": "List print-ready product variants",
+            "description": {
+              "content": "Lists the variants of your print-ready products, optionally filtered by product name.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v2",
+                "recipes",
+                ":recipeId",
+                "printreadyproducts",
+                "variants"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "productName",
+                  "value": "<string>"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "recipeId",
+                  "description": "(Required) Your RecipeID from the Gooten Admin."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dfba651e-c90b-459d-951b-97d67d366487",
+              "name": "A page of print-ready product variants.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "recipes",
+                    ":recipeId",
+                    "printreadyproducts",
+                    "variants"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "productName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "recipeId",
+                      "description": "(Required) Your RecipeID from the Gooten Admin."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Variants\": [\n    {\n      \"key_0\": false,\n      \"key_1\": 6662\n    },\n    {\n      \"key_0\": true,\n      \"key_1\": 7204\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e91f9b70-3d08-4d1f-a601-8c61ce52c658",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v2",
+                    "recipes",
+                    ":recipeId",
+                    "printreadyproducts",
+                    "variants"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "productName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "recipeId",
+                      "description": "(Required) Your RecipeID from the Gooten Admin."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.print.io",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "RecipeID"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "8dd63da0-02a2-4c07-a54f-238785f5aa43",
+    "name": "Gooten Orders Print Assets API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Gooten API is a REST interface for the Gooten print-on-demand and global manufacturing / fulfillment platform. It is hosted at api.print.io (the platform Gooten was built on) and lets you browse the product catalog and per-region SKUs, retrieve print templates, create print-ready products from artwork, quote shipping and order prices, and submit and manage manufacturing orders. The API is organized around resource-oriented URLs and standard HTTP verbs (GET, POST, PUT, DELETE) and returns JSON. All requests must use HTTPS.\n\nAuthentication is by two credentials passed as query parameters. Every request requires a `RecipeID` (a public identifier for your integration). Order-writing and billing operations additionally require a `PartnerBillingKey` (a private key that must never be exposed client-side and must be URL-encoded). Most catalog endpoints live under the source API base `/api/v/5/source/api`; print-ready product (PRP) management lives under the versioned base `/api/v2/recipes/{recipeId}`.\n\nThis description was authored by API Evangelist from Gooten's public documentation. Field-level request/response shapes are modeled from the documented examples and are approximate; consult the Gooten docs for exact payloads.\n\nContact Support:\n Name: Gooten",
+      "type": "text/plain"
+    }
+  }
+}

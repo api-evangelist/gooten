@@ -1,0 +1,148 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Gooten Orders Products API",
+    "version": "5"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "RecipeID",
+      "value": "{{RecipeID}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Products",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List products",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.print.io/api/v/5/source/api/products",
+            "params": [
+              {
+                "name": "RecipeID",
+                "value": "",
+                "type": "query",
+                "description": "Your public RecipeID from the Gooten Admin."
+              },
+              {
+                "name": "countryCode",
+                "value": "",
+                "type": "query",
+                "description": "Two-character ISO 3166-1 alpha-2 country code for the shipping destination."
+              },
+              {
+                "name": "all",
+                "value": "",
+                "type": "query",
+                "description": "When true, returns the full catalog rather than only enabled products."
+              }
+            ]
+          },
+          "docs": "Lists catalog products. In Gooten a \"product\" is a category (for example \"Canvas Wraps\") that has many SKUs / variants beneath it."
+        },
+        {
+          "info": {
+            "name": "List product variants (SKUs)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.print.io/api/v/5/source/api/productvariants",
+            "params": [
+              {
+                "name": "RecipeID",
+                "value": "",
+                "type": "query",
+                "description": "Your public RecipeID from the Gooten Admin."
+              },
+              {
+                "name": "productId",
+                "value": "",
+                "type": "query",
+                "description": "The product identifier obtained from the products endpoint."
+              },
+              {
+                "name": "countryCode",
+                "value": "",
+                "type": "query",
+                "description": "Two-character ISO 3166-1 alpha-2 country code for the shipping destination."
+              },
+              {
+                "name": "currencyCode",
+                "value": "",
+                "type": "query",
+                "description": "ISO currency code for returned pricing. Defaults to USD."
+              },
+              {
+                "name": "compression",
+                "value": "",
+                "type": "query",
+                "description": "When true, reduces the response payload size."
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Lists the available variants (SKUs) and pricing for a product. SKUs can differ by region - for example US canvas wraps use inch formats and European ones use centimeter formats - so a country code is required."
+        },
+        {
+          "info": {
+            "name": "List supported shipping countries",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.print.io/api/v/5/source/api/countries",
+            "params": [
+              {
+                "name": "RecipeID",
+                "value": "",
+                "type": "query",
+                "description": "Your public RecipeID from the Gooten Admin."
+              }
+            ]
+          },
+          "docs": "Returns the countries Gooten can ship to, each with a name, ISO code, support flag, measurement system, flag image URL, and default currency."
+        },
+        {
+          "info": {
+            "name": "List supported currencies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.print.io/api/v/5/source/api/currencies",
+            "params": [
+              {
+                "name": "RecipeID",
+                "value": "",
+                "type": "query",
+                "description": "Your public RecipeID from the Gooten Admin."
+              }
+            ]
+          },
+          "docs": "Returns the currencies supported for pricing and order submission."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

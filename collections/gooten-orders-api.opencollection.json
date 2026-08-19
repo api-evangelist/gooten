@@ -1,0 +1,222 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Gooten Orders API",
+    "version": "5"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "RecipeID",
+      "value": "{{RecipeID}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Orders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get an order by ID or search orders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.print.io/api/v/5/source/api/orders",
+            "params": [
+              {
+                "name": "RecipeID",
+                "value": "",
+                "type": "query",
+                "description": "Your public RecipeID from the Gooten Admin."
+              },
+              {
+                "name": "Id",
+                "value": "",
+                "type": "query",
+                "description": "The Safe Order ID of a specific order to retrieve."
+              },
+              {
+                "name": "partnerBillingKey",
+                "value": "",
+                "type": "query",
+                "description": "Your private Partner Billing Key, URL-encoded. Never expose this client-side."
+              },
+              {
+                "name": "lastName",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "postalCode",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query",
+                "description": "Search lower bound, format yyyy-mm-dd."
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query",
+                "description": "Search upper bound, format yyyy-mm-dd."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Retrieves a single order by its Safe Order ID (pass `Id`), or searches orders by criteria such as last name, email, postal code, and date range when `Id` is omitted. Search requires the PartnerBillingKey."
+        },
+        {
+          "info": {
+            "name": "Submit an order",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.print.io/api/v/5/source/api/orders",
+            "params": [
+              {
+                "name": "RecipeID",
+                "value": "",
+                "type": "query",
+                "description": "Your public RecipeID from the Gooten Admin."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submits a new manufacturing order. Requires ship-to and billing addresses, one or more line items (SKU, quantity, artwork images, and a ship type or carrier method), and a Payment object carrying the PartnerBillingKey. Returns the new order Id."
+        },
+        {
+          "info": {
+            "name": "Get billing information for an order",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.print.io/api/v/5/source/api/orderbilling",
+            "params": [
+              {
+                "name": "orderid",
+                "value": "",
+                "type": "query",
+                "description": "The order ID to retrieve billing for."
+              },
+              {
+                "name": "RecipeID",
+                "value": "",
+                "type": "query",
+                "description": "Your public RecipeID from the Gooten Admin."
+              },
+              {
+                "name": "partnerBillingKey",
+                "value": "",
+                "type": "query",
+                "description": "Your private Partner Billing Key, URL-encoded. Never expose this client-side."
+              },
+              {
+                "name": "currency",
+                "value": "",
+                "type": "query",
+                "description": "Currency for the returned amounts."
+              }
+            ]
+          },
+          "docs": "Returns the full billing breakdown for an order - product cost, per-item shipping cost, subtotal, shipping, surcharges, taxes, fees, discounts, and total. Requires the PartnerBillingKey."
+        },
+        {
+          "info": {
+            "name": "Update the shipping address for an order",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.print.io/api/v/5/source/api/shippingAddress",
+            "params": [
+              {
+                "name": "orderId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "RecipeID",
+                "value": "",
+                "type": "query",
+                "description": "Your public RecipeID from the Gooten Admin."
+              },
+              {
+                "name": "partnerBillingKey",
+                "value": "",
+                "type": "query",
+                "description": "Your private Partner Billing Key, URL-encoded. Never expose this client-side."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates the ship-to address on an existing order, provided the order is still in an editable status. Requires the PartnerBillingKey."
+        },
+        {
+          "info": {
+            "name": "Update the shipping method for order items",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.print.io/api/v/5/source/api/shippingMethod",
+            "params": [
+              {
+                "name": "orderId",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "RecipeID",
+                "value": "",
+                "type": "query",
+                "description": "Your public RecipeID from the Gooten Admin."
+              },
+              {
+                "name": "partnerBillingKey",
+                "value": "",
+                "type": "query",
+                "description": "Your private Partner Billing Key, URL-encoded. Never expose this client-side."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Changes the shipping method for one or more items in an order. Shipping method changes automatically adjust order pricing. Requires the PartnerBillingKey."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

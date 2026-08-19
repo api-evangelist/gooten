@@ -1,0 +1,739 @@
+{
+  "item": [
+    {
+      "id": "16f01840-f7dd-4784-a988-b60fafe71651",
+      "name": "Products",
+      "description": {
+        "content": "Catalog products, per-region SKUs, supported countries and currencies.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "efe276f7-e28a-4545-b32a-3fb5c9bd77a7",
+          "name": "List products",
+          "request": {
+            "name": "List products",
+            "description": {
+              "content": "Lists catalog products. In Gooten a \"product\" is a category (for example \"Canvas Wraps\") that has many SKUs / variants beneath it.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v",
+                "5",
+                "source",
+                "api",
+                "products"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "RecipeID",
+                  "value": "<string>",
+                  "description": "(Required) Your public RecipeID from the Gooten Admin."
+                },
+                {
+                  "disabled": false,
+                  "key": "countryCode",
+                  "value": "<string>",
+                  "description": "Two-character ISO 3166-1 alpha-2 country code for the shipping destination."
+                },
+                {
+                  "disabled": false,
+                  "key": "all",
+                  "value": "<boolean>",
+                  "description": "When true, returns the full catalog rather than only enabled products."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "31c1b028-350b-4ab0-82a5-c53ffb5bc47e",
+              "name": "A list of products.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "all",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Products\": [\n    {\n      \"Id\": \"string\",\n      \"Name\": \"string\",\n      \"CategoryName\": \"string\"\n    },\n    {\n      \"Id\": \"string\",\n      \"Name\": \"string\",\n      \"CategoryName\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a46e9ea7-cf7a-434a-b738-fd1fe3e8b4cd",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "products"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "all",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8881dce6-08f0-4c04-9e2f-6422a4d658f7",
+          "name": "List product variants (SKUs)",
+          "request": {
+            "name": "List product variants (SKUs)",
+            "description": {
+              "content": "Lists the available variants (SKUs) and pricing for a product. SKUs can differ by region - for example US canvas wraps use inch formats and European ones use centimeter formats - so a country code is required.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v",
+                "5",
+                "source",
+                "api",
+                "productvariants"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "RecipeID",
+                  "value": "<string>",
+                  "description": "(Required) Your public RecipeID from the Gooten Admin."
+                },
+                {
+                  "disabled": false,
+                  "key": "productId",
+                  "value": "<string>",
+                  "description": "(Required) The product identifier obtained from the products endpoint."
+                },
+                {
+                  "disabled": false,
+                  "key": "countryCode",
+                  "value": "<string>",
+                  "description": "(Required) Two-character ISO 3166-1 alpha-2 country code for the shipping destination."
+                },
+                {
+                  "disabled": false,
+                  "key": "currencyCode",
+                  "value": "USD",
+                  "description": "ISO currency code for returned pricing. Defaults to USD."
+                },
+                {
+                  "disabled": false,
+                  "key": "compression",
+                  "value": "<boolean>",
+                  "description": "When true, reduces the response payload size."
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "01f11d0d-828c-4190-8dec-d8d33bc8abb4",
+              "name": "A list of product variants (SKUs) with pricing.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "productvariants"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "productId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "currencyCode",
+                      "value": "USD"
+                    },
+                    {
+                      "key": "compression",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": false,\n  \"ProductVariants\": [\n    {\n      \"Sku\": \"string\",\n      \"ProductId\": \"string\",\n      \"Price\": {\n        \"Price\": 9749.498568281642,\n        \"CurrencyCode\": \"string\"\n      }\n    },\n    {\n      \"Sku\": \"string\",\n      \"ProductId\": \"string\",\n      \"Price\": {\n        \"Price\": 8693.934369384562,\n        \"CurrencyCode\": \"string\"\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1e0ea557-5ed7-471e-b2f6-eb216d984a2e",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "productvariants"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "productId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "countryCode",
+                      "value": "US"
+                    },
+                    {
+                      "key": "currencyCode",
+                      "value": "USD"
+                    },
+                    {
+                      "key": "compression",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": false,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c6c9b351-c90b-4243-9238-5b66c9c217fc",
+          "name": "List supported shipping countries",
+          "request": {
+            "name": "List supported shipping countries",
+            "description": {
+              "content": "Returns the countries Gooten can ship to, each with a name, ISO code, support flag, measurement system, flag image URL, and default currency.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v",
+                "5",
+                "source",
+                "api",
+                "countries"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "RecipeID",
+                  "value": "<string>",
+                  "description": "(Required) Your public RecipeID from the Gooten Admin."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "85ec1d16-0570-4086-95eb-4dd249d950fa",
+              "name": "A list of supported shipping countries.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "countries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Countries\": [\n    {\n      \"Name\": \"string\",\n      \"Code\": \"string\",\n      \"IsSupported\": true,\n      \"MeasurementCode\": \"string\",\n      \"FlagUrl\": \"string\",\n      \"DefaultCurrency\": \"string\"\n    },\n    {\n      \"Name\": \"string\",\n      \"Code\": \"string\",\n      \"IsSupported\": true,\n      \"MeasurementCode\": \"string\",\n      \"FlagUrl\": \"string\",\n      \"DefaultCurrency\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "23470b5b-2549-4308-9969-cbd9e8a0c4b3",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "countries"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": false,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "455f4070-c861-4284-9f29-56a13bc5279b",
+          "name": "List supported currencies",
+          "request": {
+            "name": "List supported currencies",
+            "description": {
+              "content": "Returns the currencies supported for pricing and order submission.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v",
+                "5",
+                "source",
+                "api",
+                "currencies"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "RecipeID",
+                  "value": "<string>",
+                  "description": "(Required) Your public RecipeID from the Gooten Admin."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d23e0abc-d3da-4420-8b6a-8dcc7f1ae517",
+              "name": "A list of supported currencies.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "currencies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": false,\n  \"Currencies\": [\n    \"USD\",\n    \"USD\"\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "71486b3f-4b53-46f1-a77d-9dc96aeda258",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "currencies"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": false,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.print.io",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "RecipeID"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "aed01b60-3f32-4a0c-bd68-ad648772bd9d",
+    "name": "Gooten Orders Products API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Gooten API is a REST interface for the Gooten print-on-demand and global manufacturing / fulfillment platform. It is hosted at api.print.io (the platform Gooten was built on) and lets you browse the product catalog and per-region SKUs, retrieve print templates, create print-ready products from artwork, quote shipping and order prices, and submit and manage manufacturing orders. The API is organized around resource-oriented URLs and standard HTTP verbs (GET, POST, PUT, DELETE) and returns JSON. All requests must use HTTPS.\n\nAuthentication is by two credentials passed as query parameters. Every request requires a `RecipeID` (a public identifier for your integration). Order-writing and billing operations additionally require a `PartnerBillingKey` (a private key that must never be exposed client-side and must be URL-encoded). Most catalog endpoints live under the source API base `/api/v/5/source/api`; print-ready product (PRP) management lives under the versioned base `/api/v2/recipes/{recipeId}`.\n\nThis description was authored by API Evangelist from Gooten's public documentation. Field-level request/response shapes are modeled from the documented examples and are approximate; consult the Gooten docs for exact payloads.\n\nContact Support:\n Name: Gooten",
+      "type": "text/plain"
+    }
+  }
+}

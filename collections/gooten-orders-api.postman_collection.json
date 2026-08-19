@@ -1,0 +1,1328 @@
+{
+  "item": [
+    {
+      "id": "461f8cea-e35e-412c-9914-0621da073142",
+      "name": "Orders",
+      "description": {
+        "content": "Submit, retrieve, search, and update manufacturing orders.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d8390f93-1172-4fb0-ae9c-9184acfc2060",
+          "name": "Get an order by ID or search orders",
+          "request": {
+            "name": "Get an order by ID or search orders",
+            "description": {
+              "content": "Retrieves a single order by its Safe Order ID (pass `Id`), or searches orders by criteria such as last name, email, postal code, and date range when `Id` is omitted. Search requires the PartnerBillingKey.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v",
+                "5",
+                "source",
+                "api",
+                "orders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "RecipeID",
+                  "value": "<string>",
+                  "description": "(Required) Your public RecipeID from the Gooten Admin."
+                },
+                {
+                  "disabled": false,
+                  "key": "Id",
+                  "value": "<string>",
+                  "description": "The Safe Order ID of a specific order to retrieve."
+                },
+                {
+                  "disabled": false,
+                  "key": "partnerBillingKey",
+                  "value": "<string>",
+                  "description": "(Required) Your private Partner Billing Key, URL-encoded. Never expose this client-side."
+                },
+                {
+                  "disabled": false,
+                  "key": "lastName",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "email",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "postalCode",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "startDate",
+                  "value": "<date>",
+                  "description": "Search lower bound, format yyyy-mm-dd."
+                },
+                {
+                  "disabled": false,
+                  "key": "endDate",
+                  "value": "<date>",
+                  "description": "Search upper bound, format yyyy-mm-dd."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "pageSize",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "aeceb040-75ed-4cfd-bbaa-559a62f192cd",
+              "name": "An order or a page of matching orders.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "partnerBillingKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lastName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "postalCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Id\": \"string\",\n  \"Status\": \"string\",\n  \"ShipToAddress\": {\n    \"FirstName\": \"string\",\n    \"LastName\": \"string\",\n    \"Line1\": \"string\",\n    \"Line2\": \"string\",\n    \"City\": \"string\",\n    \"State\": \"string\",\n    \"CountryCode\": \"string\",\n    \"PostalCode\": \"string\",\n    \"Phone\": \"string\",\n    \"Email\": \"string\",\n    \"IsBusinessAddress\": false\n  },\n  \"BillingAddress\": {\n    \"FirstName\": \"string\",\n    \"LastName\": \"string\",\n    \"Line1\": \"string\",\n    \"Line2\": \"string\",\n    \"City\": \"string\",\n    \"State\": \"string\",\n    \"CountryCode\": \"string\",\n    \"PostalCode\": \"string\",\n    \"Phone\": \"string\",\n    \"Email\": \"string\",\n    \"IsBusinessAddress\": false\n  },\n  \"Items\": [\n    {\n      \"Quantity\": 4840,\n      \"SKU\": \"string\",\n      \"ShipType\": \"string\",\n      \"ShipCarrierMethodId\": 2200,\n      \"Images\": [\n        {\n          \"Url\": \"string\",\n          \"SpaceId\": \"string\",\n          \"Index\": 3199,\n          \"ThumbnailUrl\": \"string\"\n        },\n        {\n          \"Url\": \"string\",\n          \"SpaceId\": \"string\",\n          \"Index\": 5651,\n          \"ThumbnailUrl\": \"string\"\n        }\n      ],\n      \"SourceId\": \"string\",\n      \"Meta\": {\n        \"key_0\": 8964\n      }\n    },\n    {\n      \"Quantity\": 4496,\n      \"SKU\": \"string\",\n      \"ShipType\": \"string\",\n      \"ShipCarrierMethodId\": 4451,\n      \"Images\": [\n        {\n          \"Url\": \"string\",\n          \"SpaceId\": \"string\",\n          \"Index\": 6870,\n          \"ThumbnailUrl\": \"string\"\n        },\n        {\n          \"Url\": \"string\",\n          \"SpaceId\": \"string\",\n          \"Index\": 88,\n          \"ThumbnailUrl\": \"string\"\n        }\n      ],\n      \"SourceId\": \"string\",\n      \"Meta\": {\n        \"key_0\": 6287.900334938158,\n        \"key_1\": 6236\n      }\n    }\n  ],\n  \"BillingSummary\": {\n    \"ProductCost\": 7220.1535948470355,\n    \"ShippingCost\": 247.86585670909744,\n    \"SubTotal\": 1785.3437427258268,\n    \"Surcharges\": 7554.162103794145,\n    \"Taxes\": 9068.485580632367,\n    \"Fees\": 7107.744439795325,\n    \"Discounts\": 6168.3049686761915,\n    \"Total\": 8519.195776583347,\n    \"CurrencyCode\": \"string\"\n  },\n  \"HadError\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1ea30678-39a1-4942-ac2a-d2d976389a8d",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "Id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "partnerBillingKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "lastName",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "email",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "postalCode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "startDate",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "endDate",
+                      "value": "<date>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "pageSize",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": false,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "febb33d5-2719-44cd-8e89-08f2ac4fd202",
+          "name": "Submit an order",
+          "request": {
+            "name": "Submit an order",
+            "description": {
+              "content": "Submits a new manufacturing order. Requires ship-to and billing addresses, one or more line items (SKU, quantity, artwork images, and a ship type or carrier method), and a Payment object carrying the PartnerBillingKey. Returns the new order Id.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v",
+                "5",
+                "source",
+                "api",
+                "orders"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "RecipeID",
+                  "value": "<string>",
+                  "description": "(Required) Your public RecipeID from the Gooten Admin."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ShipToAddress\": {\n    \"FirstName\": \"<string>\",\n    \"LastName\": \"<string>\",\n    \"Line1\": \"<string>\",\n    \"Line2\": \"<string>\",\n    \"City\": \"<string>\",\n    \"State\": \"<string>\",\n    \"CountryCode\": \"<string>\",\n    \"PostalCode\": \"<string>\",\n    \"Phone\": \"<string>\",\n    \"Email\": \"<string>\",\n    \"IsBusinessAddress\": \"<boolean>\"\n  },\n  \"BillingAddress\": {\n    \"FirstName\": \"<string>\",\n    \"LastName\": \"<string>\",\n    \"Line1\": \"<string>\",\n    \"Line2\": \"<string>\",\n    \"City\": \"<string>\",\n    \"State\": \"<string>\",\n    \"CountryCode\": \"<string>\",\n    \"PostalCode\": \"<string>\",\n    \"Phone\": \"<string>\",\n    \"Email\": \"<string>\",\n    \"IsBusinessAddress\": \"<boolean>\"\n  },\n  \"Items\": [\n    {\n      \"Quantity\": \"<integer>\",\n      \"SKU\": \"<string>\",\n      \"ShipType\": \"<string>\",\n      \"ShipCarrierMethodId\": \"<integer>\",\n      \"Images\": [\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        },\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        }\n      ],\n      \"SourceId\": \"<string>\",\n      \"Meta\": {\n        \"key_0\": \"string\"\n      }\n    },\n    {\n      \"Quantity\": \"<integer>\",\n      \"SKU\": \"<string>\",\n      \"ShipType\": \"<string>\",\n      \"ShipCarrierMethodId\": \"<integer>\",\n      \"Images\": [\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        },\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        }\n      ],\n      \"SourceId\": \"<string>\",\n      \"Meta\": {\n        \"key_0\": 8670.559300797207,\n        \"key_1\": \"string\",\n        \"key_2\": 8517,\n        \"key_3\": \"string\"\n      }\n    }\n  ],\n  \"Payment\": {\n    \"PartnerBillingKey\": \"<string>\",\n    \"CurrencyCode\": \"<string>\"\n  },\n  \"SourceId\": \"<string>\",\n  \"IsPartnerSourceIdUnique\": \"<boolean>\",\n  \"IsInTestMode\": \"<boolean>\",\n  \"Meta\": {\n    \"key_0\": false\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ee260a86-c310-42a4-b35f-69e7357377d0",
+              "name": "The created order identifier.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ShipToAddress\": {\n    \"FirstName\": \"<string>\",\n    \"LastName\": \"<string>\",\n    \"Line1\": \"<string>\",\n    \"Line2\": \"<string>\",\n    \"City\": \"<string>\",\n    \"State\": \"<string>\",\n    \"CountryCode\": \"<string>\",\n    \"PostalCode\": \"<string>\",\n    \"Phone\": \"<string>\",\n    \"Email\": \"<string>\",\n    \"IsBusinessAddress\": \"<boolean>\"\n  },\n  \"BillingAddress\": {\n    \"FirstName\": \"<string>\",\n    \"LastName\": \"<string>\",\n    \"Line1\": \"<string>\",\n    \"Line2\": \"<string>\",\n    \"City\": \"<string>\",\n    \"State\": \"<string>\",\n    \"CountryCode\": \"<string>\",\n    \"PostalCode\": \"<string>\",\n    \"Phone\": \"<string>\",\n    \"Email\": \"<string>\",\n    \"IsBusinessAddress\": \"<boolean>\"\n  },\n  \"Items\": [\n    {\n      \"Quantity\": \"<integer>\",\n      \"SKU\": \"<string>\",\n      \"ShipType\": \"<string>\",\n      \"ShipCarrierMethodId\": \"<integer>\",\n      \"Images\": [\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        },\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        }\n      ],\n      \"SourceId\": \"<string>\",\n      \"Meta\": {\n        \"key_0\": 6573,\n        \"key_1\": false,\n        \"key_2\": 5162.626230662813\n      }\n    },\n    {\n      \"Quantity\": \"<integer>\",\n      \"SKU\": \"<string>\",\n      \"ShipType\": \"<string>\",\n      \"ShipCarrierMethodId\": \"<integer>\",\n      \"Images\": [\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        },\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        }\n      ],\n      \"SourceId\": \"<string>\",\n      \"Meta\": {\n        \"key_0\": \"string\",\n        \"key_1\": 5671\n      }\n    }\n  ],\n  \"Payment\": {\n    \"PartnerBillingKey\": \"<string>\",\n    \"CurrencyCode\": \"<string>\"\n  },\n  \"SourceId\": \"<string>\",\n  \"IsPartnerSourceIdUnique\": \"<boolean>\",\n  \"IsInTestMode\": \"<boolean>\",\n  \"Meta\": {\n    \"key_0\": 2568\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"Id\": \"string\",\n  \"HadError\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "afeda774-ae60-4746-87a0-7852181b19fc",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ShipToAddress\": {\n    \"FirstName\": \"<string>\",\n    \"LastName\": \"<string>\",\n    \"Line1\": \"<string>\",\n    \"Line2\": \"<string>\",\n    \"City\": \"<string>\",\n    \"State\": \"<string>\",\n    \"CountryCode\": \"<string>\",\n    \"PostalCode\": \"<string>\",\n    \"Phone\": \"<string>\",\n    \"Email\": \"<string>\",\n    \"IsBusinessAddress\": \"<boolean>\"\n  },\n  \"BillingAddress\": {\n    \"FirstName\": \"<string>\",\n    \"LastName\": \"<string>\",\n    \"Line1\": \"<string>\",\n    \"Line2\": \"<string>\",\n    \"City\": \"<string>\",\n    \"State\": \"<string>\",\n    \"CountryCode\": \"<string>\",\n    \"PostalCode\": \"<string>\",\n    \"Phone\": \"<string>\",\n    \"Email\": \"<string>\",\n    \"IsBusinessAddress\": \"<boolean>\"\n  },\n  \"Items\": [\n    {\n      \"Quantity\": \"<integer>\",\n      \"SKU\": \"<string>\",\n      \"ShipType\": \"<string>\",\n      \"ShipCarrierMethodId\": \"<integer>\",\n      \"Images\": [\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        },\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        }\n      ],\n      \"SourceId\": \"<string>\",\n      \"Meta\": {\n        \"key_0\": 6573,\n        \"key_1\": false,\n        \"key_2\": 5162.626230662813\n      }\n    },\n    {\n      \"Quantity\": \"<integer>\",\n      \"SKU\": \"<string>\",\n      \"ShipType\": \"<string>\",\n      \"ShipCarrierMethodId\": \"<integer>\",\n      \"Images\": [\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        },\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        }\n      ],\n      \"SourceId\": \"<string>\",\n      \"Meta\": {\n        \"key_0\": \"string\",\n        \"key_1\": 5671\n      }\n    }\n  ],\n  \"Payment\": {\n    \"PartnerBillingKey\": \"<string>\",\n    \"CurrencyCode\": \"<string>\"\n  },\n  \"SourceId\": \"<string>\",\n  \"IsPartnerSourceIdUnique\": \"<boolean>\",\n  \"IsInTestMode\": \"<boolean>\",\n  \"Meta\": {\n    \"key_0\": 2568\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "681b385b-8dee-4bc7-b1c6-99973be6929a",
+              "name": "The request payload failed validation.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "orders"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"ShipToAddress\": {\n    \"FirstName\": \"<string>\",\n    \"LastName\": \"<string>\",\n    \"Line1\": \"<string>\",\n    \"Line2\": \"<string>\",\n    \"City\": \"<string>\",\n    \"State\": \"<string>\",\n    \"CountryCode\": \"<string>\",\n    \"PostalCode\": \"<string>\",\n    \"Phone\": \"<string>\",\n    \"Email\": \"<string>\",\n    \"IsBusinessAddress\": \"<boolean>\"\n  },\n  \"BillingAddress\": {\n    \"FirstName\": \"<string>\",\n    \"LastName\": \"<string>\",\n    \"Line1\": \"<string>\",\n    \"Line2\": \"<string>\",\n    \"City\": \"<string>\",\n    \"State\": \"<string>\",\n    \"CountryCode\": \"<string>\",\n    \"PostalCode\": \"<string>\",\n    \"Phone\": \"<string>\",\n    \"Email\": \"<string>\",\n    \"IsBusinessAddress\": \"<boolean>\"\n  },\n  \"Items\": [\n    {\n      \"Quantity\": \"<integer>\",\n      \"SKU\": \"<string>\",\n      \"ShipType\": \"<string>\",\n      \"ShipCarrierMethodId\": \"<integer>\",\n      \"Images\": [\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        },\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        }\n      ],\n      \"SourceId\": \"<string>\",\n      \"Meta\": {\n        \"key_0\": 6573,\n        \"key_1\": false,\n        \"key_2\": 5162.626230662813\n      }\n    },\n    {\n      \"Quantity\": \"<integer>\",\n      \"SKU\": \"<string>\",\n      \"ShipType\": \"<string>\",\n      \"ShipCarrierMethodId\": \"<integer>\",\n      \"Images\": [\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        },\n        {\n          \"Url\": \"<string>\",\n          \"SpaceId\": \"<string>\",\n          \"Index\": \"<integer>\",\n          \"ThumbnailUrl\": \"<string>\"\n        }\n      ],\n      \"SourceId\": \"<string>\",\n      \"Meta\": {\n        \"key_0\": \"string\",\n        \"key_1\": 5671\n      }\n    }\n  ],\n  \"Payment\": {\n    \"PartnerBillingKey\": \"<string>\",\n    \"CurrencyCode\": \"<string>\"\n  },\n  \"SourceId\": \"<string>\",\n  \"IsPartnerSourceIdUnique\": \"<boolean>\",\n  \"IsInTestMode\": \"<boolean>\",\n  \"Meta\": {\n    \"key_0\": 2568\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3616ff16-02e3-45a4-9787-891fbf016c45",
+          "name": "Get billing information for an order",
+          "request": {
+            "name": "Get billing information for an order",
+            "description": {
+              "content": "Returns the full billing breakdown for an order - product cost, per-item shipping cost, subtotal, shipping, surcharges, taxes, fees, discounts, and total. Requires the PartnerBillingKey.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v",
+                "5",
+                "source",
+                "api",
+                "orderbilling"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "orderid",
+                  "value": "<string>",
+                  "description": "(Required) The order ID to retrieve billing for."
+                },
+                {
+                  "disabled": false,
+                  "key": "RecipeID",
+                  "value": "<string>",
+                  "description": "(Required) Your public RecipeID from the Gooten Admin."
+                },
+                {
+                  "disabled": false,
+                  "key": "partnerBillingKey",
+                  "value": "<string>",
+                  "description": "(Required) Your private Partner Billing Key, URL-encoded. Never expose this client-side."
+                },
+                {
+                  "disabled": false,
+                  "key": "currency",
+                  "value": "<string>",
+                  "description": "Currency for the returned amounts."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2a61289b-573a-47c5-af90-8327e670aa20",
+              "name": "The billing breakdown for the order.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "orderbilling"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "orderid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "partnerBillingKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ProductCost\": 3028.0582168076476,\n  \"ShippingCost\": 6362.34583290347,\n  \"SubTotal\": 6424.163061477651,\n  \"Surcharges\": 8438.62245236763,\n  \"Taxes\": 7385.898288780143,\n  \"Fees\": 2783.8387365366348,\n  \"Discounts\": 8559.8302855102,\n  \"Total\": 402.3166759962893,\n  \"CurrencyCode\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f3090378-2b93-41b5-9751-9d092b96fa1e",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "orderbilling"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "orderid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "partnerBillingKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "32c1e346-e5d3-4d65-b4a9-0e24a31f2eee",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "orderbilling"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "orderid",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "partnerBillingKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "currency",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a1c4d425-8c6c-4a39-9c4f-ce35f5638ae1",
+          "name": "Update the shipping address for an order",
+          "request": {
+            "name": "Update the shipping address for an order",
+            "description": {
+              "content": "Updates the ship-to address on an existing order, provided the order is still in an editable status. Requires the PartnerBillingKey.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v",
+                "5",
+                "source",
+                "api",
+                "shippingAddress"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "orderId",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "RecipeID",
+                  "value": "<string>",
+                  "description": "(Required) Your public RecipeID from the Gooten Admin."
+                },
+                {
+                  "disabled": false,
+                  "key": "partnerBillingKey",
+                  "value": "<string>",
+                  "description": "(Required) Your private Partner Billing Key, URL-encoded. Never expose this client-side."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"FirstName\": \"<string>\",\n  \"LastName\": \"<string>\",\n  \"Line1\": \"<string>\",\n  \"Line2\": \"<string>\",\n  \"City\": \"<string>\",\n  \"State\": \"<string>\",\n  \"CountryCode\": \"<string>\",\n  \"PostalCode\": \"<string>\",\n  \"Phone\": \"<string>\",\n  \"Email\": \"<string>\",\n  \"IsBusinessAddress\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "afd0e024-9d59-4e6b-9eb7-072b7e73f14e",
+              "name": "Update result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "shippingAddress"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "orderId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "partnerBillingKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"FirstName\": \"<string>\",\n  \"LastName\": \"<string>\",\n  \"Line1\": \"<string>\",\n  \"Line2\": \"<string>\",\n  \"City\": \"<string>\",\n  \"State\": \"<string>\",\n  \"CountryCode\": \"<string>\",\n  \"PostalCode\": \"<string>\",\n  \"Phone\": \"<string>\",\n  \"Email\": \"<string>\",\n  \"IsBusinessAddress\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0b78b2ca-b4dd-4b5e-91e5-53057dcd11bf",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "shippingAddress"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "orderId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "partnerBillingKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"FirstName\": \"<string>\",\n  \"LastName\": \"<string>\",\n  \"Line1\": \"<string>\",\n  \"Line2\": \"<string>\",\n  \"City\": \"<string>\",\n  \"State\": \"<string>\",\n  \"CountryCode\": \"<string>\",\n  \"PostalCode\": \"<string>\",\n  \"Phone\": \"<string>\",\n  \"Email\": \"<string>\",\n  \"IsBusinessAddress\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9e886e41-f8f0-4527-9993-4169cd78d976",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "shippingAddress"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "orderId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "partnerBillingKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"FirstName\": \"<string>\",\n  \"LastName\": \"<string>\",\n  \"Line1\": \"<string>\",\n  \"Line2\": \"<string>\",\n  \"City\": \"<string>\",\n  \"State\": \"<string>\",\n  \"CountryCode\": \"<string>\",\n  \"PostalCode\": \"<string>\",\n  \"Phone\": \"<string>\",\n  \"Email\": \"<string>\",\n  \"IsBusinessAddress\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "40a4c3ad-0aa4-43b5-bfe4-b6af9a72e27e",
+          "name": "Update the shipping method for order items",
+          "request": {
+            "name": "Update the shipping method for order items",
+            "description": {
+              "content": "Changes the shipping method for one or more items in an order. Shipping method changes automatically adjust order pricing. Requires the PartnerBillingKey.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v",
+                "5",
+                "source",
+                "api",
+                "shippingMethod"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "orderId",
+                  "value": "<string>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "RecipeID",
+                  "value": "<string>",
+                  "description": "(Required) Your public RecipeID from the Gooten Admin."
+                },
+                {
+                  "disabled": false,
+                  "key": "partnerBillingKey",
+                  "value": "<string>",
+                  "description": "(Required) Your private Partner Billing Key, URL-encoded. Never expose this client-side."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"OrderItemIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"NewShippingMethod\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0c47b7f7-782d-4443-bac8-6cf90b5966fa",
+              "name": "Update result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "shippingMethod"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "orderId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "partnerBillingKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"OrderItemIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"NewShippingMethod\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Id\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "339be09f-7242-4524-9532-2fa3c20d7e39",
+              "name": "Missing or invalid RecipeID / PartnerBillingKey.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "shippingMethod"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "orderId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "partnerBillingKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"OrderItemIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"NewShippingMethod\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f5deb952-ac1e-4293-bc37-68987851c0bd",
+              "name": "The requested resource was not found.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v",
+                    "5",
+                    "source",
+                    "api",
+                    "shippingMethod"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "orderId",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "partnerBillingKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "RecipeID",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"OrderItemIds\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"NewShippingMethod\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"HadError\": true,\n  \"Errors\": [\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    },\n    {\n      \"Message\": \"string\",\n      \"PropertyName\": \"string\",\n      \"ErrorReference\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.print.io",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "RecipeID"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "1975f7fa-02ae-41ca-ac18-7e909f2d6ef3",
+    "name": "Gooten Orders API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Gooten API is a REST interface for the Gooten print-on-demand and global manufacturing / fulfillment platform. It is hosted at api.print.io (the platform Gooten was built on) and lets you browse the product catalog and per-region SKUs, retrieve print templates, create print-ready products from artwork, quote shipping and order prices, and submit and manage manufacturing orders. The API is organized around resource-oriented URLs and standard HTTP verbs (GET, POST, PUT, DELETE) and returns JSON. All requests must use HTTPS.\n\nAuthentication is by two credentials passed as query parameters. Every request requires a `RecipeID` (a public identifier for your integration). Order-writing and billing operations additionally require a `PartnerBillingKey` (a private key that must never be exposed client-side and must be URL-encoded). Most catalog endpoints live under the source API base `/api/v/5/source/api`; print-ready product (PRP) management lives under the versioned base `/api/v2/recipes/{recipeId}`.\n\nThis description was authored by API Evangelist from Gooten's public documentation. Field-level request/response shapes are modeled from the documented examples and are approximate; consult the Gooten docs for exact payloads.\n\nContact Support:\n Name: Gooten",
+      "type": "text/plain"
+    }
+  }
+}

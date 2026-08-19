@@ -1,0 +1,176 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Gooten Orders Print Assets API",
+    "version": "5"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "RecipeID",
+      "value": "{{RecipeID}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Print Assets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List product templates for a SKU",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.print.io/api/v/5/source/api/producttemplates",
+            "params": [
+              {
+                "name": "RecipeID",
+                "value": "",
+                "type": "query",
+                "description": "Your public RecipeID from the Gooten Admin."
+              },
+              {
+                "name": "sku",
+                "value": "",
+                "type": "query",
+                "description": "The SKU to retrieve template data for."
+              }
+            ]
+          },
+          "docs": "Returns the template data describing how to build print-ready art for a SKU - the number of image spaces, required sizes, and coordinates used to render and validate artwork."
+        },
+        {
+          "info": {
+            "name": "List print-ready products",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.print.io/api/v2/recipes/:recipeId/printreadyproducts",
+            "params": [
+              {
+                "name": "recipeId",
+                "value": "",
+                "type": "path",
+                "description": "Your RecipeID from the Gooten Admin."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number; defaults to 1."
+              }
+            ]
+          },
+          "docs": "Lists the print-ready products (PRPs) configured for your recipe."
+        },
+        {
+          "info": {
+            "name": "Create a print-ready product",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.print.io/api/v2/recipes/:recipeId/printreadyproducts",
+            "params": [
+              {
+                "name": "recipeId",
+                "value": "",
+                "type": "path",
+                "description": "Your RecipeID from the Gooten Admin."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Creates a print-ready product that binds a Gooten SKU to your artwork design, positioned by template space (SpaceDesc and/or SpaceId)."
+        },
+        {
+          "info": {
+            "name": "Update a print-ready product",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.print.io/api/v2/recipes/:recipeId/printreadyproducts",
+            "params": [
+              {
+                "name": "recipeId",
+                "value": "",
+                "type": "path",
+                "description": "Your RecipeID from the Gooten Admin."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Updates an existing print-ready product with the same payload shape as creation."
+        },
+        {
+          "info": {
+            "name": "Delete a print-ready product",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.print.io/api/v2/recipes/:recipeId/printreadyproducts/:productId",
+            "params": [
+              {
+                "name": "recipeId",
+                "value": "",
+                "type": "path",
+                "description": "Your RecipeID from the Gooten Admin."
+              },
+              {
+                "name": "productId",
+                "value": "",
+                "type": "path",
+                "description": "The print-ready product identifier."
+              }
+            ]
+          },
+          "docs": "Deletes a print-ready product by its identifier."
+        },
+        {
+          "info": {
+            "name": "List print-ready product variants",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.print.io/api/v2/recipes/:recipeId/printreadyproducts/variants",
+            "params": [
+              {
+                "name": "recipeId",
+                "value": "",
+                "type": "path",
+                "description": "Your RecipeID from the Gooten Admin."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "productName",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Lists the variants of your print-ready products, optionally filtered by product name."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
