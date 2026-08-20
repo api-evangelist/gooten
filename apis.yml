@@ -30,6 +30,13 @@ tags:
 - Print on Demand
 - Fulfillment
 - Manufacturing
+- E-Commerce
+- Dropshipping
+- Custom Products
+tags_raw:
+- Print on Demand
+- Fulfillment
+- Manufacturing
 - Ecommerce
 - Dropshipping
 - Custom Products
@@ -43,6 +50,8 @@ apis:
   humanURL: https://www.gooten.com/api-documentation/product-variants-skus-for-a-product/
   baseURL: https://api.print.io/api/v/5/source/api
   tags:
+  - Order
+  tags_raw:
   - Orders
   properties:
   - type: OpenAPI
@@ -103,6 +112,8 @@ apis:
   humanURL: https://www.gooten.com/api-documentation/product-variants-skus-for-a-product/
   baseURL: https://api.print.io/api/v/5/source/api
   tags:
+  - Product
+  tags_raw:
   - Products
   properties:
   - type: OpenAPI
