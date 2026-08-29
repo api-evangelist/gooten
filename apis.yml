@@ -12,6 +12,18 @@ description: Gooten is a print-on-demand and global manufacturing and fulfillmen
   with a public RecipeID and, for order and billing operations, a private
   PartnerBillingKey. There are no setup or monthly fees - you pay the per-order
   production and shipping cost only when an item is manufactured and shipped.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
