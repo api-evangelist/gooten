@@ -1,10 +1,7 @@
 {
   "provider": "gooten",
   "sources": [
-    "gooten-orders-api-openapi.yml",
-    "gooten-print-assets-api-openapi.yml",
-    "gooten-products-api-openapi.yml",
-    "gooten-shipping-api-openapi.yml"
+    "_original/gooten-openapi.yml"
   ],
   "outputs": [
     "gooten-orders-api-openapi.yml",
@@ -15,6 +12,15 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "gooten-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "gooten-orders-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gooten-print-assets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gooten-products-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gooten-shipping-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

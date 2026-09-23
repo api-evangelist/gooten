@@ -1,13 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Gooten Orders Shipping API
-  description: 'The Gooten API is a REST interface for the Gooten print-on-demand and global manufacturing / fulfillment platform. It is hosted at api.print.io (the platform Gooten was built on) and lets you browse the product catalog and per-region SKUs, retrieve print templates, create print-ready products from artwork, quote shipping and order prices, and submit and manage manufacturing orders. The API is organized around resource-oriented URLs and standard HTTP verbs (GET, POST, PUT, DELETE) and returns JSON. All requests must use HTTPS.
-
-
-    Authentication is by two credentials passed as query parameters. Every request requires a `RecipeID` (a public identifier for your integration). Order-writing and billing operations additionally require a `PartnerBillingKey` (a private key that must never be exposed client-side and must be URL-encoded). Most catalog endpoints live under the source API base `/api/v/5/source/api`; print-ready product (PRP) management lives under the versioned base `/api/v2/recipes/{recipeId}`.
-
-
-    This description was authored by API Evangelist from Gooten''s public documentation. Field-level request/response shapes are modeled from the documented examples and are approximate; consult the Gooten docs for exact payloads.'
+  title: Gooten Shipping API
+  description: The Gooten API is a REST interface for the Gooten print-on-demand and global manufacturing / fulfillment platform.
   version: '5'
   contact:
     name: Gooten
@@ -77,32 +71,32 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    RecipeID:
-      name: RecipeID
-      in: query
-      required: true
-      description: Your public RecipeID from the Gooten Admin.
-      schema:
-        type: string
   schemas:
-    Error:
+    Address:
       type: object
-      description: Gooten error envelope. Responses carry a HadError flag and error details.
       properties:
-        HadError:
+        FirstName:
+          type: string
+        LastName:
+          type: string
+        Line1:
+          type: string
+        Line2:
+          type: string
+        City:
+          type: string
+        State:
+          type: string
+        CountryCode:
+          type: string
+        PostalCode:
+          type: string
+        Phone:
+          type: string
+        Email:
+          type: string
+        IsBusinessAddress:
           type: boolean
-        Errors:
-          type: array
-          items:
-            type: object
-            properties:
-              Message:
-                type: string
-              PropertyName:
-                type: string
-              ErrorReference:
-                type: string
     BillingSummary:
       type: object
       properties:
@@ -153,40 +147,23 @@ components:
               type: string
             PartnerBillingKey:
               type: string
-    Address:
+    Error:
       type: object
+      description: Gooten error envelope. Responses carry a HadError flag and error details.
       properties:
-        FirstName:
-          type: string
-        LastName:
-          type: string
-        Line1:
-          type: string
-        Line2:
-          type: string
-        City:
-          type: string
-        State:
-          type: string
-        CountryCode:
-          type: string
-        PostalCode:
-          type: string
-        Phone:
-          type: string
-        Email:
-          type: string
-        IsBusinessAddress:
+        HadError:
           type: boolean
-    ShippingOption:
-      type: object
-      properties:
-        Method:
-          type: string
-        Price:
-          type: number
-        CurrencyCode:
-          type: string
+        Errors:
+          type: array
+          items:
+            type: object
+            properties:
+              Message:
+                type: string
+              PropertyName:
+                type: string
+              ErrorReference:
+                type: string
     ShippingPricesRequest:
       type: object
       required:
@@ -215,6 +192,23 @@ components:
                 type: string
               Quantity:
                 type: integer
+    ShippingOption:
+      type: object
+      properties:
+        Method:
+          type: string
+        Price:
+          type: number
+        CurrencyCode:
+          type: string
+  parameters:
+    RecipeID:
+      name: RecipeID
+      in: query
+      required: true
+      description: Your public RecipeID from the Gooten Admin.
+      schema:
+        type: string
   responses:
     Unauthorized:
       description: Missing or invalid RecipeID / PartnerBillingKey.

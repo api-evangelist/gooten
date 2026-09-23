@@ -1,13 +1,7 @@
-openapi: 3.0.3
+openapi: 3.2.0
 info:
-  title: Gooten Orders Print Assets API
-  description: 'The Gooten API is a REST interface for the Gooten print-on-demand and global manufacturing / fulfillment platform. It is hosted at api.print.io (the platform Gooten was built on) and lets you browse the product catalog and per-region SKUs, retrieve print templates, create print-ready products from artwork, quote shipping and order prices, and submit and manage manufacturing orders. The API is organized around resource-oriented URLs and standard HTTP verbs (GET, POST, PUT, DELETE) and returns JSON. All requests must use HTTPS.
-
-
-    Authentication is by two credentials passed as query parameters. Every request requires a `RecipeID` (a public identifier for your integration). Order-writing and billing operations additionally require a `PartnerBillingKey` (a private key that must never be exposed client-side and must be URL-encoded). Most catalog endpoints live under the source API base `/api/v/5/source/api`; print-ready product (PRP) management lives under the versioned base `/api/v2/recipes/{recipeId}`.
-
-
-    This description was authored by API Evangelist from Gooten''s public documentation. Field-level request/response shapes are modeled from the documented examples and are approximate; consult the Gooten docs for exact payloads.'
+  title: Gooten Print Assets API
+  description: The Gooten API is a REST interface for the Gooten print-on-demand and global manufacturing / fulfillment platform.
   version: '5'
   contact:
     name: Gooten
@@ -206,27 +200,36 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+  parameters:
+    RecipeID:
+      name: RecipeID
+      in: query
+      required: true
+      description: Your public RecipeID from the Gooten Admin.
+      schema:
+        type: string
+    RecipeIdPath:
+      name: recipeId
+      in: path
+      required: true
+      description: Your RecipeID from the Gooten Admin.
+      schema:
+        type: string
   schemas:
-    PrintReadyProductInput:
+    PrintReadyProduct:
+      allOf:
+      - $ref: '#/components/schemas/PrintReadyProductInput'
+      - type: object
+        properties:
+          Id:
+            type: string
+    GenericResult:
       type: object
-      required:
-      - Sku
       properties:
-        Sku:
+        HadError:
+          type: boolean
+        Id:
           type: string
-        Name:
-          type: string
-        Images:
-          type: array
-          items:
-            type: object
-            properties:
-              Url:
-                type: string
-              SpaceId:
-                type: string
-              SpaceDesc:
-                type: string
     ProductTemplate:
       type: object
       properties:
@@ -249,6 +252,26 @@ components:
                 type: number
               FinalY:
                 type: number
+    PrintReadyProductInput:
+      type: object
+      required:
+      - Sku
+      properties:
+        Sku:
+          type: string
+        Name:
+          type: string
+        Images:
+          type: array
+          items:
+            type: object
+            properties:
+              Url:
+                type: string
+              SpaceId:
+                type: string
+              SpaceDesc:
+                type: string
     Error:
       type: object
       description: Gooten error envelope. Responses carry a HadError flag and error details.
@@ -266,35 +289,6 @@ components:
                 type: string
               ErrorReference:
                 type: string
-    GenericResult:
-      type: object
-      properties:
-        HadError:
-          type: boolean
-        Id:
-          type: string
-    PrintReadyProduct:
-      allOf:
-      - $ref: '#/components/schemas/PrintReadyProductInput'
-      - type: object
-        properties:
-          Id:
-            type: string
-  parameters:
-    RecipeID:
-      name: RecipeID
-      in: query
-      required: true
-      description: Your public RecipeID from the Gooten Admin.
-      schema:
-        type: string
-    RecipeIdPath:
-      name: recipeId
-      in: path
-      required: true
-      description: Your RecipeID from the Gooten Admin.
-      schema:
-        type: string
   securitySchemes:
     recipeId:
       type: apiKey
