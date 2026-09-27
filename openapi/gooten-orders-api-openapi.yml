@@ -221,7 +221,28 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
+  parameters:
+    RecipeID:
+      name: RecipeID
+      in: query
+      required: true
+      description: Your public RecipeID from the Gooten Admin.
+      schema:
+        type: string
+    PartnerBillingKey:
+      name: partnerBillingKey
+      in: query
+      required: true
+      description: Your private Partner Billing Key, URL-encoded. Never expose this client-side.
+      schema:
+        type: string
   responses:
+    Unauthorized:
+      description: Missing or invalid RecipeID / PartnerBillingKey.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     ValidationError:
       description: The request payload failed validation.
       content:
@@ -234,38 +255,14 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid RecipeID / PartnerBillingKey.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    Address:
+    GenericResult:
       type: object
       properties:
-        FirstName:
-          type: string
-        LastName:
-          type: string
-        Line1:
-          type: string
-        Line2:
-          type: string
-        City:
-          type: string
-        State:
-          type: string
-        CountryCode:
-          type: string
-        PostalCode:
-          type: string
-        Phone:
-          type: string
-        Email:
-          type: string
-        IsBusinessAddress:
+        HadError:
           type: boolean
+        Id:
+          type: string
     OrderInput:
       type: object
       required:
@@ -321,31 +318,47 @@ components:
           type: number
         CurrencyCode:
           type: string
-    GenericResult:
+    Error:
       type: object
+      description: Gooten error envelope. Responses carry a HadError flag and error details.
       properties:
         HadError:
           type: boolean
-        Id:
-          type: string
-    Order:
-      type: object
-      properties:
-        Id:
-          type: string
-        Status:
-          type: string
-        ShipToAddress:
-          $ref: '#/components/schemas/Address'
-        BillingAddress:
-          $ref: '#/components/schemas/Address'
-        Items:
+        Errors:
           type: array
           items:
-            $ref: '#/components/schemas/OrderItem'
-        BillingSummary:
-          $ref: '#/components/schemas/BillingSummary'
-        HadError:
+            type: object
+            properties:
+              Message:
+                type: string
+              PropertyName:
+                type: string
+              ErrorReference:
+                type: string
+    Address:
+      type: object
+      properties:
+        FirstName:
+          type: string
+        LastName:
+          type: string
+        Line1:
+          type: string
+        Line2:
+          type: string
+        City:
+          type: string
+        State:
+          type: string
+        CountryCode:
+          type: string
+        PostalCode:
+          type: string
+        Phone:
+          type: string
+        Email:
+          type: string
+        IsBusinessAddress:
           type: boolean
     OrderItem:
       type: object
@@ -380,38 +393,25 @@ components:
         Meta:
           type: object
           additionalProperties: true
-    Error:
+    Order:
       type: object
-      description: Gooten error envelope. Responses carry a HadError flag and error details.
       properties:
-        HadError:
-          type: boolean
-        Errors:
+        Id:
+          type: string
+        Status:
+          type: string
+        ShipToAddress:
+          $ref: '#/components/schemas/Address'
+        BillingAddress:
+          $ref: '#/components/schemas/Address'
+        Items:
           type: array
           items:
-            type: object
-            properties:
-              Message:
-                type: string
-              PropertyName:
-                type: string
-              ErrorReference:
-                type: string
-  parameters:
-    RecipeID:
-      name: RecipeID
-      in: query
-      required: true
-      description: Your public RecipeID from the Gooten Admin.
-      schema:
-        type: string
-    PartnerBillingKey:
-      name: partnerBillingKey
-      in: query
-      required: true
-      description: Your private Partner Billing Key, URL-encoded. Never expose this client-side.
-      schema:
-        type: string
+            $ref: '#/components/schemas/OrderItem'
+        BillingSummary:
+          $ref: '#/components/schemas/BillingSummary'
+        HadError:
+          type: boolean
   securitySchemes:
     recipeId:
       type: apiKey

@@ -181,25 +181,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  responses:
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid RecipeID / PartnerBillingKey.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   parameters:
     RecipeID:
       name: RecipeID
@@ -215,14 +196,26 @@ components:
       description: Your RecipeID from the Gooten Admin.
       schema:
         type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid RecipeID / PartnerBillingKey.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   schemas:
-    PrintReadyProduct:
-      allOf:
-      - $ref: '#/components/schemas/PrintReadyProductInput'
-      - type: object
-        properties:
-          Id:
-            type: string
     GenericResult:
       type: object
       properties:
@@ -252,6 +245,30 @@ components:
                 type: number
               FinalY:
                 type: number
+    Error:
+      type: object
+      description: Gooten error envelope. Responses carry a HadError flag and error details.
+      properties:
+        HadError:
+          type: boolean
+        Errors:
+          type: array
+          items:
+            type: object
+            properties:
+              Message:
+                type: string
+              PropertyName:
+                type: string
+              ErrorReference:
+                type: string
+    PrintReadyProduct:
+      allOf:
+      - $ref: '#/components/schemas/PrintReadyProductInput'
+      - type: object
+        properties:
+          Id:
+            type: string
     PrintReadyProductInput:
       type: object
       required:
@@ -271,23 +288,6 @@ components:
               SpaceId:
                 type: string
               SpaceDesc:
-                type: string
-    Error:
-      type: object
-      description: Gooten error envelope. Responses carry a HadError flag and error details.
-      properties:
-        HadError:
-          type: boolean
-        Errors:
-          type: array
-          items:
-            type: object
-            properties:
-              Message:
-                type: string
-              PropertyName:
-                type: string
-              ErrorReference:
                 type: string
   securitySchemes:
     recipeId:

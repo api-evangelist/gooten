@@ -166,14 +166,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    RecipeID:
-      name: RecipeID
-      in: query
-      required: true
-      description: Your public RecipeID from the Gooten Admin.
-      schema:
-        type: string
   schemas:
     Country:
       type: object
@@ -190,29 +182,6 @@ components:
           type: string
         DefaultCurrency:
           type: string
-    Product:
-      type: object
-      properties:
-        Id:
-          type: string
-        Name:
-          type: string
-        CategoryName:
-          type: string
-    ProductVariant:
-      type: object
-      properties:
-        Sku:
-          type: string
-        ProductId:
-          type: string
-        Price:
-          type: object
-          properties:
-            Price:
-              type: number
-            CurrencyCode:
-              type: string
     Error:
       type: object
       description: Gooten error envelope. Responses carry a HadError flag and error details.
@@ -230,6 +199,37 @@ components:
                 type: string
               ErrorReference:
                 type: string
+    ProductVariant:
+      type: object
+      properties:
+        Sku:
+          type: string
+        ProductId:
+          type: string
+        Price:
+          type: object
+          properties:
+            Price:
+              type: number
+            CurrencyCode:
+              type: string
+    Product:
+      type: object
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+        CategoryName:
+          type: string
+  parameters:
+    RecipeID:
+      name: RecipeID
+      in: query
+      required: true
+      description: Your public RecipeID from the Gooten Admin.
+      schema:
+        type: string
   responses:
     Unauthorized:
       description: Missing or invalid RecipeID / PartnerBillingKey.
