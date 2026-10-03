@@ -221,48 +221,101 @@ paths:
         '404':
           $ref: '#/components/responses/NotFound'
 components:
-  parameters:
-    RecipeID:
-      name: RecipeID
-      in: query
-      required: true
-      description: Your public RecipeID from the Gooten Admin.
-      schema:
-        type: string
-    PartnerBillingKey:
-      name: partnerBillingKey
-      in: query
-      required: true
-      description: Your private Partner Billing Key, URL-encoded. Never expose this client-side.
-      schema:
-        type: string
-  responses:
-    Unauthorized:
-      description: Missing or invalid RecipeID / PartnerBillingKey.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
   schemas:
-    GenericResult:
+    Address:
       type: object
+      properties:
+        FirstName:
+          type: string
+        LastName:
+          type: string
+        Line1:
+          type: string
+        Line2:
+          type: string
+        City:
+          type: string
+        State:
+          type: string
+        CountryCode:
+          type: string
+        PostalCode:
+          type: string
+        Phone:
+          type: string
+        Email:
+          type: string
+        IsBusinessAddress:
+          type: boolean
+    Error:
+      type: object
+      description: Gooten error envelope. Responses carry a HadError flag and error details.
       properties:
         HadError:
           type: boolean
+        Errors:
+          type: array
+          items:
+            type: object
+            properties:
+              Message:
+                type: string
+              PropertyName:
+                type: string
+              ErrorReference:
+                type: string
+    Order:
+      type: object
+      properties:
         Id:
           type: string
+        Status:
+          type: string
+        ShipToAddress:
+          $ref: '#/components/schemas/Address'
+        BillingAddress:
+          $ref: '#/components/schemas/Address'
+        Items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        BillingSummary:
+          $ref: '#/components/schemas/BillingSummary'
+        HadError:
+          type: boolean
+    OrderItem:
+      type: object
+      required:
+      - Quantity
+      - SKU
+      properties:
+        Quantity:
+          type: integer
+        SKU:
+          type: string
+        ShipType:
+          type: string
+          description: Ship type, or provide ShipCarrierMethodId instead.
+        ShipCarrierMethodId:
+          type: integer
+        Images:
+          type: array
+          items:
+            type: object
+            properties:
+              Url:
+                type: string
+              SpaceId:
+                type: string
+              Index:
+                type: integer
+              ThumbnailUrl:
+                type: string
+        SourceId:
+          type: string
+        Meta:
+          type: object
+          additionalProperties: true
     OrderInput:
       type: object
       required:
@@ -318,100 +371,47 @@ components:
           type: number
         CurrencyCode:
           type: string
-    Error:
+    GenericResult:
       type: object
-      description: Gooten error envelope. Responses carry a HadError flag and error details.
       properties:
         HadError:
           type: boolean
-        Errors:
-          type: array
-          items:
-            type: object
-            properties:
-              Message:
-                type: string
-              PropertyName:
-                type: string
-              ErrorReference:
-                type: string
-    Address:
-      type: object
-      properties:
-        FirstName:
-          type: string
-        LastName:
-          type: string
-        Line1:
-          type: string
-        Line2:
-          type: string
-        City:
-          type: string
-        State:
-          type: string
-        CountryCode:
-          type: string
-        PostalCode:
-          type: string
-        Phone:
-          type: string
-        Email:
-          type: string
-        IsBusinessAddress:
-          type: boolean
-    OrderItem:
-      type: object
-      required:
-      - Quantity
-      - SKU
-      properties:
-        Quantity:
-          type: integer
-        SKU:
-          type: string
-        ShipType:
-          type: string
-          description: Ship type, or provide ShipCarrierMethodId instead.
-        ShipCarrierMethodId:
-          type: integer
-        Images:
-          type: array
-          items:
-            type: object
-            properties:
-              Url:
-                type: string
-              SpaceId:
-                type: string
-              Index:
-                type: integer
-              ThumbnailUrl:
-                type: string
-        SourceId:
-          type: string
-        Meta:
-          type: object
-          additionalProperties: true
-    Order:
-      type: object
-      properties:
         Id:
           type: string
-        Status:
-          type: string
-        ShipToAddress:
-          $ref: '#/components/schemas/Address'
-        BillingAddress:
-          $ref: '#/components/schemas/Address'
-        Items:
-          type: array
-          items:
-            $ref: '#/components/schemas/OrderItem'
-        BillingSummary:
-          $ref: '#/components/schemas/BillingSummary'
-        HadError:
-          type: boolean
+  parameters:
+    RecipeID:
+      name: RecipeID
+      in: query
+      required: true
+      description: Your public RecipeID from the Gooten Admin.
+      schema:
+        type: string
+    PartnerBillingKey:
+      name: partnerBillingKey
+      in: query
+      required: true
+      description: Your private Partner Billing Key, URL-encoded. Never expose this client-side.
+      schema:
+        type: string
+  responses:
+    Unauthorized:
+      description: Missing or invalid RecipeID / PartnerBillingKey.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
   securitySchemes:
     recipeId:
       type: apiKey

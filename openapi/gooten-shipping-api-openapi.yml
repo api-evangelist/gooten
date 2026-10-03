@@ -72,56 +72,31 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
-    PriceEstimateRequest:
-      type: object
-      required:
-      - Items
-      - Payment
-      properties:
-        ShipToAddress:
-          $ref: '#/components/schemas/Address'
-        Items:
-          type: array
-          items:
-            type: object
-            required:
-            - SKU
-            - Quantity
-            properties:
-              Quantity:
-                type: integer
-              SKU:
-                type: string
-              ShipType:
-                type: string
-        Payment:
-          type: object
-          properties:
-            CurrencyCode:
-              type: string
-            PartnerBillingKey:
-              type: string
-    BillingSummary:
+    Address:
       type: object
       properties:
-        ProductCost:
-          type: number
-        ShippingCost:
-          type: number
-        SubTotal:
-          type: number
-        Surcharges:
-          type: number
-        Taxes:
-          type: number
-        Fees:
-          type: number
-        Discounts:
-          type: number
-        Total:
-          type: number
-        CurrencyCode:
+        FirstName:
           type: string
+        LastName:
+          type: string
+        Line1:
+          type: string
+        Line2:
+          type: string
+        City:
+          type: string
+        State:
+          type: string
+        CountryCode:
+          type: string
+        PostalCode:
+          type: string
+        Phone:
+          type: string
+        Email:
+          type: string
+        IsBusinessAddress:
+          type: boolean
     Error:
       type: object
       description: Gooten error envelope. Responses carry a HadError flag and error details.
@@ -167,6 +142,35 @@ components:
                 type: string
               Quantity:
                 type: integer
+    PriceEstimateRequest:
+      type: object
+      required:
+      - Items
+      - Payment
+      properties:
+        ShipToAddress:
+          $ref: '#/components/schemas/Address'
+        Items:
+          type: array
+          items:
+            type: object
+            required:
+            - SKU
+            - Quantity
+            properties:
+              Quantity:
+                type: integer
+              SKU:
+                type: string
+              ShipType:
+                type: string
+        Payment:
+          type: object
+          properties:
+            CurrencyCode:
+              type: string
+            PartnerBillingKey:
+              type: string
     ShippingOption:
       type: object
       properties:
@@ -176,31 +180,27 @@ components:
           type: number
         CurrencyCode:
           type: string
-    Address:
+    BillingSummary:
       type: object
       properties:
-        FirstName:
+        ProductCost:
+          type: number
+        ShippingCost:
+          type: number
+        SubTotal:
+          type: number
+        Surcharges:
+          type: number
+        Taxes:
+          type: number
+        Fees:
+          type: number
+        Discounts:
+          type: number
+        Total:
+          type: number
+        CurrencyCode:
           type: string
-        LastName:
-          type: string
-        Line1:
-          type: string
-        Line2:
-          type: string
-        City:
-          type: string
-        State:
-          type: string
-        CountryCode:
-          type: string
-        PostalCode:
-          type: string
-        Phone:
-          type: string
-        Email:
-          type: string
-        IsBusinessAddress:
-          type: boolean
   parameters:
     RecipeID:
       name: RecipeID

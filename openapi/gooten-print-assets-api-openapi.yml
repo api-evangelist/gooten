@@ -181,21 +181,6 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
-  parameters:
-    RecipeID:
-      name: RecipeID
-      in: query
-      required: true
-      description: Your public RecipeID from the Gooten Admin.
-      schema:
-        type: string
-    RecipeIdPath:
-      name: recipeId
-      in: path
-      required: true
-      description: Your RecipeID from the Gooten Admin.
-      schema:
-        type: string
   responses:
     Unauthorized:
       description: Missing or invalid RecipeID / PartnerBillingKey.
@@ -216,13 +201,30 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
   schemas:
-    GenericResult:
+    PrintReadyProduct:
+      allOf:
+      - $ref: '#/components/schemas/PrintReadyProductInput'
+      - type: object
+        properties:
+          Id:
+            type: string
+    Error:
       type: object
+      description: Gooten error envelope. Responses carry a HadError flag and error details.
       properties:
         HadError:
           type: boolean
-        Id:
-          type: string
+        Errors:
+          type: array
+          items:
+            type: object
+            properties:
+              Message:
+                type: string
+              PropertyName:
+                type: string
+              ErrorReference:
+                type: string
     ProductTemplate:
       type: object
       properties:
@@ -245,30 +247,6 @@ components:
                 type: number
               FinalY:
                 type: number
-    Error:
-      type: object
-      description: Gooten error envelope. Responses carry a HadError flag and error details.
-      properties:
-        HadError:
-          type: boolean
-        Errors:
-          type: array
-          items:
-            type: object
-            properties:
-              Message:
-                type: string
-              PropertyName:
-                type: string
-              ErrorReference:
-                type: string
-    PrintReadyProduct:
-      allOf:
-      - $ref: '#/components/schemas/PrintReadyProductInput'
-      - type: object
-        properties:
-          Id:
-            type: string
     PrintReadyProductInput:
       type: object
       required:
@@ -289,6 +267,28 @@ components:
                 type: string
               SpaceDesc:
                 type: string
+    GenericResult:
+      type: object
+      properties:
+        HadError:
+          type: boolean
+        Id:
+          type: string
+  parameters:
+    RecipeIdPath:
+      name: recipeId
+      in: path
+      required: true
+      description: Your RecipeID from the Gooten Admin.
+      schema:
+        type: string
+    RecipeID:
+      name: RecipeID
+      in: query
+      required: true
+      description: Your public RecipeID from the Gooten Admin.
+      schema:
+        type: string
   securitySchemes:
     recipeId:
       type: apiKey
