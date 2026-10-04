@@ -184,6 +184,15 @@ components:
                 type: string
               ErrorReference:
                 type: string
+    Product:
+      type: object
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+        CategoryName:
+          type: string
     ProductVariant:
       type: object
       properties:
@@ -212,15 +221,6 @@ components:
         FlagUrl:
           type: string
         DefaultCurrency:
-          type: string
-    Product:
-      type: object
-      properties:
-        Id:
-          type: string
-        Name:
-          type: string
-        CategoryName:
           type: string
   parameters:
     RecipeID:
