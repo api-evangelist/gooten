@@ -182,6 +182,9 @@ apis:
   - type: APIReference
     url: https://www.gooten.com/api-documentation/print-ready-products/
 common:
+- type: CapabilityMap
+  url: capabilities/gooten-capability-edges.yml
+  name: Gooten Business Capability Map
 - type: AgenticAccess
   url: agentic-access/gooten-agentic-access.yml
 - type: DomainSecurity
