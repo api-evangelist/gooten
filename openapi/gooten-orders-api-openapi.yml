@@ -222,23 +222,27 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   schemas:
-    Error:
+    BillingSummary:
       type: object
-      description: Gooten error envelope. Responses carry a HadError flag and error details.
       properties:
-        HadError:
-          type: boolean
-        Errors:
-          type: array
-          items:
-            type: object
-            properties:
-              Message:
-                type: string
-              PropertyName:
-                type: string
-              ErrorReference:
-                type: string
+        ProductCost:
+          type: number
+        ShippingCost:
+          type: number
+        SubTotal:
+          type: number
+        Surcharges:
+          type: number
+        Taxes:
+          type: number
+        Fees:
+          type: number
+        Discounts:
+          type: number
+        Total:
+          type: number
+        CurrencyCode:
+          type: string
     Address:
       type: object
       properties:
@@ -264,6 +268,13 @@ components:
           type: string
         IsBusinessAddress:
           type: boolean
+    GenericResult:
+      type: object
+      properties:
+        HadError:
+          type: boolean
+        Id:
+          type: string
     OrderInput:
       type: object
       required:
@@ -298,13 +309,6 @@ components:
         Meta:
           type: object
           additionalProperties: true
-    GenericResult:
-      type: object
-      properties:
-        HadError:
-          type: boolean
-        Id:
-          type: string
     Order:
       type: object
       properties:
@@ -357,35 +361,24 @@ components:
         Meta:
           type: object
           additionalProperties: true
-    BillingSummary:
+    Error:
       type: object
+      description: Gooten error envelope. Responses carry a HadError flag and error details.
       properties:
-        ProductCost:
-          type: number
-        ShippingCost:
-          type: number
-        SubTotal:
-          type: number
-        Surcharges:
-          type: number
-        Taxes:
-          type: number
-        Fees:
-          type: number
-        Discounts:
-          type: number
-        Total:
-          type: number
-        CurrencyCode:
-          type: string
+        HadError:
+          type: boolean
+        Errors:
+          type: array
+          items:
+            type: object
+            properties:
+              Message:
+                type: string
+              PropertyName:
+                type: string
+              ErrorReference:
+                type: string
   parameters:
-    PartnerBillingKey:
-      name: partnerBillingKey
-      in: query
-      required: true
-      description: Your private Partner Billing Key, URL-encoded. Never expose this client-side.
-      schema:
-        type: string
     RecipeID:
       name: RecipeID
       in: query
@@ -393,13 +386,14 @@ components:
       description: Your public RecipeID from the Gooten Admin.
       schema:
         type: string
+    PartnerBillingKey:
+      name: partnerBillingKey
+      in: query
+      required: true
+      description: Your private Partner Billing Key, URL-encoded. Never expose this client-side.
+      schema:
+        type: string
   responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
     Unauthorized:
       description: Missing or invalid RecipeID / PartnerBillingKey.
       content:
@@ -408,6 +402,12 @@ components:
             $ref: '#/components/schemas/Error'
     ValidationError:
       description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: The requested resource was not found.
       content:
         application/json:
           schema:

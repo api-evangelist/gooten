@@ -72,6 +72,61 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    BillingSummary:
+      type: object
+      properties:
+        ProductCost:
+          type: number
+        ShippingCost:
+          type: number
+        SubTotal:
+          type: number
+        Surcharges:
+          type: number
+        Taxes:
+          type: number
+        Fees:
+          type: number
+        Discounts:
+          type: number
+        Total:
+          type: number
+        CurrencyCode:
+          type: string
+    Address:
+      type: object
+      properties:
+        FirstName:
+          type: string
+        LastName:
+          type: string
+        Line1:
+          type: string
+        Line2:
+          type: string
+        City:
+          type: string
+        State:
+          type: string
+        CountryCode:
+          type: string
+        PostalCode:
+          type: string
+        Phone:
+          type: string
+        Email:
+          type: string
+        IsBusinessAddress:
+          type: boolean
+    ShippingOption:
+      type: object
+      properties:
+        Method:
+          type: string
+        Price:
+          type: number
+        CurrencyCode:
+          type: string
     ShippingPricesRequest:
       type: object
       required:
@@ -100,48 +155,6 @@ components:
                 type: string
               Quantity:
                 type: integer
-    Error:
-      type: object
-      description: Gooten error envelope. Responses carry a HadError flag and error details.
-      properties:
-        HadError:
-          type: boolean
-        Errors:
-          type: array
-          items:
-            type: object
-            properties:
-              Message:
-                type: string
-              PropertyName:
-                type: string
-              ErrorReference:
-                type: string
-    Address:
-      type: object
-      properties:
-        FirstName:
-          type: string
-        LastName:
-          type: string
-        Line1:
-          type: string
-        Line2:
-          type: string
-        City:
-          type: string
-        State:
-          type: string
-        CountryCode:
-          type: string
-        PostalCode:
-          type: string
-        Phone:
-          type: string
-        Email:
-          type: string
-        IsBusinessAddress:
-          type: boolean
     PriceEstimateRequest:
       type: object
       required:
@@ -171,36 +184,23 @@ components:
               type: string
             PartnerBillingKey:
               type: string
-    BillingSummary:
+    Error:
       type: object
+      description: Gooten error envelope. Responses carry a HadError flag and error details.
       properties:
-        ProductCost:
-          type: number
-        ShippingCost:
-          type: number
-        SubTotal:
-          type: number
-        Surcharges:
-          type: number
-        Taxes:
-          type: number
-        Fees:
-          type: number
-        Discounts:
-          type: number
-        Total:
-          type: number
-        CurrencyCode:
-          type: string
-    ShippingOption:
-      type: object
-      properties:
-        Method:
-          type: string
-        Price:
-          type: number
-        CurrencyCode:
-          type: string
+        HadError:
+          type: boolean
+        Errors:
+          type: array
+          items:
+            type: object
+            properties:
+              Message:
+                type: string
+              PropertyName:
+                type: string
+              ErrorReference:
+                type: string
   parameters:
     RecipeID:
       name: RecipeID

@@ -167,6 +167,30 @@ paths:
           $ref: '#/components/responses/Unauthorized'
 components:
   schemas:
+    Product:
+      type: object
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+        CategoryName:
+          type: string
+    Country:
+      type: object
+      properties:
+        Name:
+          type: string
+        Code:
+          type: string
+        IsSupported:
+          type: boolean
+        MeasurementCode:
+          type: string
+        FlagUrl:
+          type: string
+        DefaultCurrency:
+          type: string
     Error:
       type: object
       description: Gooten error envelope. Responses carry a HadError flag and error details.
@@ -184,15 +208,6 @@ components:
                 type: string
               ErrorReference:
                 type: string
-    Product:
-      type: object
-      properties:
-        Id:
-          type: string
-        Name:
-          type: string
-        CategoryName:
-          type: string
     ProductVariant:
       type: object
       properties:
@@ -207,21 +222,6 @@ components:
               type: number
             CurrencyCode:
               type: string
-    Country:
-      type: object
-      properties:
-        Name:
-          type: string
-        Code:
-          type: string
-        IsSupported:
-          type: boolean
-        MeasurementCode:
-          type: string
-        FlagUrl:
-          type: string
-        DefaultCurrency:
-          type: string
   parameters:
     RecipeID:
       name: RecipeID

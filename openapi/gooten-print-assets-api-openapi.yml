@@ -181,31 +181,41 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthorized'
 components:
+  responses:
+    NotFound:
+      description: The requested resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Missing or invalid RecipeID / PartnerBillingKey.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ValidationError:
+      description: The request payload failed validation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    RecipeIdPath:
+      name: recipeId
+      in: path
+      required: true
+      description: Your RecipeID from the Gooten Admin.
+      schema:
+        type: string
+    RecipeID:
+      name: RecipeID
+      in: query
+      required: true
+      description: Your public RecipeID from the Gooten Admin.
+      schema:
+        type: string
   schemas:
-    Error:
-      type: object
-      description: Gooten error envelope. Responses carry a HadError flag and error details.
-      properties:
-        HadError:
-          type: boolean
-        Errors:
-          type: array
-          items:
-            type: object
-            properties:
-              Message:
-                type: string
-              PropertyName:
-                type: string
-              ErrorReference:
-                type: string
-    PrintReadyProduct:
-      allOf:
-      - $ref: '#/components/schemas/PrintReadyProductInput'
-      - type: object
-        properties:
-          Id:
-            type: string
     GenericResult:
       type: object
       properties:
@@ -213,26 +223,13 @@ components:
           type: boolean
         Id:
           type: string
-    PrintReadyProductInput:
-      type: object
-      required:
-      - Sku
-      properties:
-        Sku:
-          type: string
-        Name:
-          type: string
-        Images:
-          type: array
-          items:
-            type: object
-            properties:
-              Url:
-                type: string
-              SpaceId:
-                type: string
-              SpaceDesc:
-                type: string
+    PrintReadyProduct:
+      allOf:
+      - $ref: '#/components/schemas/PrintReadyProductInput'
+      - type: object
+        properties:
+          Id:
+            type: string
     ProductTemplate:
       type: object
       properties:
@@ -255,40 +252,43 @@ components:
                 type: number
               FinalY:
                 type: number
-  parameters:
-    RecipeID:
-      name: RecipeID
-      in: query
-      required: true
-      description: Your public RecipeID from the Gooten Admin.
-      schema:
-        type: string
-    RecipeIdPath:
-      name: recipeId
-      in: path
-      required: true
-      description: Your RecipeID from the Gooten Admin.
-      schema:
-        type: string
-  responses:
-    NotFound:
-      description: The requested resource was not found.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    Unauthorized:
-      description: Missing or invalid RecipeID / PartnerBillingKey.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    ValidationError:
-      description: The request payload failed validation.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
+    Error:
+      type: object
+      description: Gooten error envelope. Responses carry a HadError flag and error details.
+      properties:
+        HadError:
+          type: boolean
+        Errors:
+          type: array
+          items:
+            type: object
+            properties:
+              Message:
+                type: string
+              PropertyName:
+                type: string
+              ErrorReference:
+                type: string
+    PrintReadyProductInput:
+      type: object
+      required:
+      - Sku
+      properties:
+        Sku:
+          type: string
+        Name:
+          type: string
+        Images:
+          type: array
+          items:
+            type: object
+            properties:
+              Url:
+                type: string
+              SpaceId:
+                type: string
+              SpaceDesc:
+                type: string
   securitySchemes:
     recipeId:
       type: apiKey
