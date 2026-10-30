@@ -1,4 +1,4 @@
-# Gooten (gooten)
+# Gooten
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,135 +64,123 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Gooten is a print-on-demand and global manufacturing and fulfillment platform for custom products - apparel, wall art, drinkware, home goods, and more. Its public REST API is hosted at `api.print.io` (the Print.io platform Gooten was built on) and lets ecommerce brands and developers browse the catalog and per-region SKUs, retrieve print templates, create print-ready products from artwork, quote shipping and order prices, and submit and manage manufacturing orders routed across Gooten's distributed vendor network.
+Gooten is a print-on-demand and global manufacturing and fulfillment platform for custom products - apparel, wall art, drinkware, home goods, and more. Its REST API (hosted at api.print.io, the platform Gooten was built on) lets ecommerce brands and developers browse the product catalog and per-region SKUs, retrieve print templates, create print-ready products from artwork, quote shipping and order prices, and submit and manage manufacturing orders routed across Gooten's distributed vendor network. Requests are authenticated with a public RecipeID and, for order and billing operations, a private PartnerBillingKey. There are no setup or monthly fees - you pay the per-order production and shipping cost only when an item is manufactured and shipped.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/gooten/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/gooten/refs/heads/main/apis.yml)
+**Areas:** Print on Demand · Fulfillment · Manufacturing · E-Commerce · Dropshipping · Custom Products
 
-## Access Model
+## Gooten on APIs.io
 
-The Gooten API is open to partners and merchants - there is no application review gate documented, but you do need a Gooten account to obtain credentials.
+Everything profiled for Gooten is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/gooten/](https://apis.io/providers/gooten/)** — or go straight to one of the APIs or properties below.
 
-- **Authentication.** Every request carries a public `RecipeID` (from the Gooten Admin) as a query parameter. Order-writing and billing endpoints additionally require a private `PartnerBillingKey`, which must be URL-encoded and must never be exposed client-side.
-- **Transport.** REST over HTTPS only; plain HTTP calls fail. CORS is enabled for client-side catalog reads. Responses use a Gooten error envelope with a `HadError` flag and detailed error objects.
-- **Base URLs.** Most catalog, order, shipping, and billing endpoints live under `https://api.print.io/api/v/5/source/api`. Print-ready product (PRP) management lives under `https://api.print.io/api/v2/recipes/{recipeId}`.
-- **Pricing.** No setup or monthly fees. You pay the per-order production and shipping cost only when an item is manufactured and shipped, and set your own retail margin. High-volume merchants can negotiate custom rates with the Gooten enterprise team. See `plans/gooten-plans-pricing.yml`.
-- **Async.** Order-status updates are delivered via configurable outbound webhooks (Gooten POSTs to a URL you provide). There is no public WebSocket or SSE API - see `review.yml`.
+### APIs (4)
 
-This entry was assembled by API Evangelist from Gooten's public API documentation. Field-level request/response shapes in the OpenAPI are modeled from the documented examples and are approximate; confirm exact payloads against the Gooten docs.
+- [Gooten Orders API](https://apis.io/apis/gooten/gooten-orders-api/) — Submit, retrieve, search, and update manufacturing orders.
+- [Gooten Print Assets API](https://apis.io/apis/gooten/gooten-print-assets-api/) — Product templates and print-ready product (PRP) management.
+- [Gooten Products API](https://apis.io/apis/gooten/gooten-products-api/) — Catalog products, per-region SKUs, supported countries and currencies.
+- [Gooten Shipping API](https://apis.io/apis/gooten/gooten-shipping-api/) — Shipping option lookup and order price estimates for a cart.
 
-## Tags
+### Published properties
 
-- Print on Demand
-- Fulfillment
-- Manufacturing
-- Ecommerce
-- Dropshipping
-- Custom Products
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## Timestamps
+#### Agentic access (1)
 
-- **Created:** 2026-07-11
-- **Modified:** 2026-07-11
+Which operations an agent can call, which act, and which need a human in the loop.
 
-## APIs
+- [Gooten Agentic Access](https://apis.io/agentic-access/gooten/gooten-agentic-access/)
 
-### Gooten Products API
+#### Collections (5)
 
-Browse the Gooten catalog. A product is a category (for example "Canvas Wraps"); each product has region-specific SKUs (variants) available per shipping country. List products, list variants and pricing for a product by country and currency, and look up supported shipping countries and currencies used across the rest of the API.
+Postman and Open Collection request collections.
 
-- **Human URL:** [https://www.gooten.com/api-documentation/product-variants-skus-for-a-product/](https://www.gooten.com/api-documentation/product-variants-skus-for-a-product/)
-- **Base URL:** `https://api.print.io/api/v/5/source/api`
+- [Gooten API](https://apis.io/collections/gooten/open-gooten/)
+- [Gooten Orders API](https://apis.io/collections/gooten/open-gooten-orders-api/)
+- [Gooten Orders Print Assets API](https://apis.io/collections/gooten/open-gooten-print-assets-api/)
+- [Gooten Orders Products API](https://apis.io/collections/gooten/open-gooten-products-api/)
+- [Gooten Orders Shipping API](https://apis.io/collections/gooten/open-gooten-shipping-api/)
 
-#### Tags
+#### Security (2)
 
-- Products
-- Catalog
-- SKUs
-- Variants
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Properties
+- [Gooten Authentication](https://apis.io/security/gooten/gooten-authentication/)
+- [Gooten Domain Security](https://apis.io/security/gooten/gooten-domain-security/)
 
-- [Documentation](https://www.gooten.com/api-documentation/getting-started/)
-- [API Reference](https://www.gooten.com/api-documentation/product-variants-skus-for-a-product/)
-- [OpenAPI](openapi/gooten-openapi.yml)
-- [Postman Collection](collections/gooten.postman_collection.json)
-- [Open Collection](collections/gooten.opencollection.json)
+#### Plans and pricing (1)
 
-### Gooten Orders API
+Published plans, tiers and prices.
 
-Submit manufacturing orders with ship-to and billing addresses, line items (SKU, quantity, artwork images, ship method), and a Payment object carrying the PartnerBillingKey. Retrieve an order by its Safe Order ID or search orders by name, email, postal code, and date range, get full billing breakdowns, and update the shipping address or method on in-flight orders.
+- [Gooten Plans Pricing](https://apis.io/plans/gooten/gooten-plans-pricing/)
 
-- **Human URL:** [https://www.gooten.com/api-documentation/submitting-an-order/](https://www.gooten.com/api-documentation/submitting-an-order/)
-- **Base URL:** `https://api.print.io/api/v/5/source/api`
+#### Rate limits (1)
 
-#### Tags
+Published request limits.
 
-- Orders
-- Fulfillment
-- Billing
+- [Gooten Rate Limits](https://apis.io/rate-limits/gooten/gooten-rate-limits/)
 
-#### Properties
+#### FinOps (1)
 
-- [Documentation](https://www.gooten.com/api-documentation/submitting-an-order/)
-- [API Reference](https://www.gooten.com/api-documentation/get-order-by-id/)
-- [OpenAPI](openapi/gooten-openapi.yml)
-- [Postman Collection](collections/gooten.postman_collection.json)
-- [Open Collection](collections/gooten.opencollection.json)
+What the API costs to run, by operation.
 
-### Gooten Shipping API
+- [Gooten Finops](https://apis.io/finops/gooten/gooten-finops/)
 
-Quote a cart before you submit it. Post ship-to location and line items to retrieve available shipping options and their costs, and post a full cart to estimate the total order price - product cost, shipping, surcharges, taxes, and fees - in a chosen currency.
+## Where to find this API
 
-- **Human URL:** [https://www.gooten.com/api-documentation/shipping-options-for-a-cart/](https://www.gooten.com/api-documentation/shipping-options-for-a-cart/)
-- **Base URL:** `https://api.print.io/api/v/5/source/api`
-
-#### Tags
-
-- Shipping
-- Pricing
-- Estimates
-
-#### Properties
-
-- [Documentation](https://www.gooten.com/api-documentation/shipping-options-for-a-cart/)
-- [API Reference](https://www.gooten.com/api-documentation/getting-price-estimate-for-an-order/)
-- [OpenAPI](openapi/gooten-openapi.yml)
-- [Postman Collection](collections/gooten.postman_collection.json)
-- [Open Collection](collections/gooten.opencollection.json)
-
-### Gooten Print Assets API
-
-Manage the artwork and print data behind a SKU. Retrieve the product template for a SKU - the image spaces, required sizes, and coordinates that describe how to build print-ready art - then create, list, update, and delete print-ready products (PRPs) that bind a Gooten SKU to your artwork so it can be ordered directly. The PRP endpoints live under the `/api/v2/recipes/{recipeId}` base.
-
-- **Human URL:** [https://www.gooten.com/api-documentation/print-ready-products/](https://www.gooten.com/api-documentation/print-ready-products/)
-- **Base URL:** `https://api.print.io`
-
-#### Tags
-
-- Print Assets
-- Templates
-- Artwork
-
-#### Properties
-
-- [Documentation](https://www.gooten.com/api-documentation/listing-product-templates-for-a-sku/)
-- [API Reference](https://www.gooten.com/api-documentation/print-ready-products/)
-- [OpenAPI](openapi/gooten-openapi.yml)
-- [Postman Collection](collections/gooten.postman_collection.json)
-- [Open Collection](collections/gooten.opencollection.json)
-
-## Common Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.gooten.com)
-- [LinkedIn](https://www.linkedin.com/company/gooten)
 - [Documentation](https://www.gooten.com/api-documentation/getting-started/)
-- [Support Center](https://help.gooten.com/hc/en-us)
-- [Plans](plans/gooten-plans-pricing.yml)
-- [Rate Limits](rate-limits/gooten-rate-limits.yml)
-- [Fin Ops](finops/gooten-finops.yml)
 - [Blog](https://www.gooten.com/blog/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 26.4** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 49.9 |
+| Contract governance | 0.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 32.1 |
+| Access clarity | 5.3 |
+
+**Agent readiness 20.4** — agent-aware
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 11.8** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/gooten/](https://apis.io/providers/gooten/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Gooten: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/gooten/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
